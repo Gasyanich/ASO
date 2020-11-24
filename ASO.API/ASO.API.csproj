@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers" />
+    <ProjectReference Include="..\ASO.Services\ASO.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ASO.Services\ASO.Services.csproj" />
+    <Folder Include="Controllers" />
   </ItemGroup>
 
 </Project>
