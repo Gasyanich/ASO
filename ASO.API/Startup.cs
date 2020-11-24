@@ -24,7 +24,7 @@ namespace ASO.API
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "ASO.API", Version = "v1"}); });
             services.ConfigureDatabase(Configuration);
             services.ConfigureAspNetIdentity();
-            services.ConfigureIdentityServer();
+            services.ConfigureIdentityServer(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,7 @@
 using ASO.DataAccess.Entities;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,7 +10,7 @@ namespace ASO.Services.Bootstrap
 {
     public static class IdentityServerExtension
     {
-        public static void ConfigureIdentityServer(this IServiceCollection services)
+        public static void ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentityServer()
                 .AddInMemoryIdentityResources(IdentityResources)
@@ -20,7 +21,7 @@ namespace ASO.Services.Bootstrap
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://localhost:5001";
+                    options.Authority = configuration["IdentityServerAddress"];
 
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -57,10 +58,6 @@ namespace ASO.Services.Bootstrap
                 AllowedScopes =
                 {
                     "ASO.API"
-                },
-                AllowedCorsOrigins =
-                {
-                    "http://localhost:6001"
                 }
             }
         };
