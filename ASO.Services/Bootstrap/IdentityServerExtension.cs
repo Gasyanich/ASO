@@ -1,14 +1,38 @@
 ﻿using System.Collections.Generic;
-using ASO.DataAccess;
 using ASO.DataAccess.Entities;
 using IdentityServer4.Models;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ASO.Services.Bootstrap
 {
-    public static class ConfigureIdentityServerExtension
+    public static class IdentityServerExtension
     {
+        public static void ConfigureIdentityServer(this IServiceCollection services)
+        {
+            services.AddIdentityServer()
+                .AddInMemoryIdentityResources(IdentityResources)
+                .AddInMemoryClients(Clients)
+                .AddInMemoryApiScopes(ApiScopes)
+                .AddAspNetIdentity<User>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://localhost:5001";
+
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false,
+                        ValidateIssuer = false,
+                        ValidateActor = false,
+                        ValidateIssuerSigningKey = false
+                    };
+                });
+        }
+
         private const int MonthSeconds = DaySeconds * 30;
         private const int DaySeconds = 60 * 60 * 24;
 
@@ -45,34 +69,5 @@ namespace ASO.Services.Bootstrap
         {
             new ApiScope("ASO.API", "Autoschool online api", new List<string> {"role"})
         };
-
-        public static void ConfigureIdentityServer(this IServiceCollection services)
-        {
-            services.AddIdentityCore<User>()
-                .AddRoles<IdentityRole<long>>()
-                .AddUserManager<UserManager<User>>()
-                .AddRoleManager<RoleManager<IdentityRole<long>>>()
-                .AddSignInManager<SignInManager<User>>()
-                .AddEntityFrameworkStores<DataContext>()
-                .AddDefaultTokenProviders();
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-
-                options.User.RequireUniqueEmail = true;
-            });
-
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(IdentityResources)
-                .AddInMemoryClients(Clients)
-                .AddInMemoryApiScopes(ApiScopes)
-                .AddAspNetIdentity<User>();
-        }
     }
 }

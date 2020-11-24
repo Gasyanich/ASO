@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ASO.Services.Bootstrap
 {
-    public static class ConfigureDbExtension
+    public static class DatabaseExtension
     {
-        public static void ConfigureDb(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<DataContext>(
                 options => options.UseNpgsql(
