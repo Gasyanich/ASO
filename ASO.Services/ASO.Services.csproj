@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="IdentityModel" Version="5.0.0-preview.0" />
     <PackageReference Include="IdentityServer4" Version="4.1.1" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.1" />
@@ -15,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ASO.DataAccess\ASO.DataAccess.csproj" />
+    <ProjectReference Include="..\ASO.Models\ASO.Models.csproj" />
   </ItemGroup>
 
 </Project>

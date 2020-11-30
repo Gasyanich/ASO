@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASO.DataAccess", "ASO.DataA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASO.Services", "ASO.Services\ASO.Services.csproj", "{D47CFAE0-1E49-4C51-9180-630F83D0C3D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASO.Models", "ASO.Models\ASO.Models.csproj", "{6618DE22-76F3-40E5-BC5F-227CF8837840}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D47CFAE0-1E49-4C51-9180-630F83D0C3D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D47CFAE0-1E49-4C51-9180-630F83D0C3D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D47CFAE0-1E49-4C51-9180-630F83D0C3D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6618DE22-76F3-40E5-BC5F-227CF8837840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6618DE22-76F3-40E5-BC5F-227CF8837840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6618DE22-76F3-40E5-BC5F-227CF8837840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6618DE22-76F3-40E5-BC5F-227CF8837840}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
