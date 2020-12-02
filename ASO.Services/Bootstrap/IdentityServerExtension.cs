@@ -16,7 +16,8 @@ namespace ASO.Services.Bootstrap
                 .AddInMemoryIdentityResources(IdentityResources)
                 .AddInMemoryClients(Clients)
                 .AddInMemoryApiScopes(ApiScopes)
-                .AddAspNetIdentity<User>();
+                .AddAspNetIdentity<User>()
+                .AddDeveloperSigningCredential();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -34,9 +35,6 @@ namespace ASO.Services.Bootstrap
                 });
         }
 
-        private const int MonthSeconds = DaySeconds * 30;
-        private const int DaySeconds = 60 * 60 * 24;
-
         private static readonly IEnumerable<IdentityResource> IdentityResources = new List<IdentityResource>
         {
             new IdentityResources.OpenId(),
@@ -50,10 +48,8 @@ namespace ASO.Services.Bootstrap
             {
                 ClientId = "spa.aso.react",
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                AllowOfflineAccess = true,
                 RequireClientSecret = false,
-                AccessTokenLifetime = DaySeconds,
-                AbsoluteRefreshTokenLifetime = MonthSeconds,
+                AccessTokenLifetime = int.MaxValue,
                 AllowAccessTokensViaBrowser = true,
                 AllowedScopes =
                 {

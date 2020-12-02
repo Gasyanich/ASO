@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using ASO.DataAccess.Entities;
 using ASO.Models.DTO;
-using ASO.Models.Requests;
-using ASO.Models.Responses;
+using ASO.Services.Helpers;
 using ASO.Services.Interfaces;
-using AutoMapper;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Identity;
 
 namespace ASO.Services
@@ -13,39 +12,44 @@ namespace ASO.Services
     public class AccountService : IAccountService
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole<long>> _roleManager;
-        private readonly IMapper _mapper;
 
-        public AccountService(
-            UserManager<User> userManager,
-            RoleManager<IdentityRole<long>> roleManager,
-            IMapper mapper)
+        public AccountService(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
-            _mapper = mapper;
         }
 
-        public async Task<IdentityResult> RegisterUserAsync(UserRegisterDto userRegister)
+        public async Task<UserLoginDto> LoginAsync(UserLoginDto userLogin)
         {
-            var user = _mapper.Map<User>(userRegister);
-            var password = "randomPassword";
+            using var client = new HttpClient();
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
 
-            if (!await _roleManager.RoleExistsAsync(userRegister.Role))
+            var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
-                await _roleManager.CreateAsync(new IdentityRole<long>(userRegister.Role));
-            }
+                Address = disco.TokenEndpoint,
+                ClientId = "spa.aso.react",
+                UserName = userLogin.Email,
+                Password = userLogin.Password
+            });
 
-            var result = await _userManager.CreateAsync(user, password);
+            if (tokenResponse.IsError)
+                return userLogin with {IsSuccess = false};
 
-            await _userManager.AddToRoleAsync(user, userRegister.Role);
+            var accessToken = tokenResponse.AccessToken;
+            var role = accessToken.GetIdentityRole();
 
-            return result;
+            return userLogin with {IsSuccess = true, AccessToken = accessToken, Role = role};
         }
 
-        public Task<LoginResponse> LoginAsync(LoginRequest request)
+        public async Task<bool> ConfirmEmailAsync(long userId, string token)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+                return false;
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+            return result.Succeeded;
         }
     }
 }

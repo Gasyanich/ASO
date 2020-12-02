@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ASO.Models.DTO;
 using ASO.Models.Requests;
+using ASO.Models.Responses;
 using ASO.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -20,20 +21,24 @@ namespace ASO.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RegisterAsync(RegisterRequest request)
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync([FromForm] LoginRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var loginDto = _mapper.Map<UserLoginDto>(request);
 
-            var userDto = _mapper.Map<UserRegisterDto>(request);
+            var loginResult = await _accountService.LoginAsync(loginDto);
+            if (loginResult.IsSuccess)
+                return Ok(_mapper.Map<LoginResponse>(loginResult));
 
-            var registerResult = await _accountService.RegisterUserAsync(userDto);
+            return Unauthorized();
+        }
 
-            if (registerResult.Succeeded)
-                return Ok();
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(long usid, string tkn)
+        {
+            var result = await _accountService.ConfirmEmailAsync(usid, tkn);
 
-            return BadRequest(registerResult.Errors);
+            return result ? Ok("Email подтвержден.") : BadRequest();
         }
     }
 }

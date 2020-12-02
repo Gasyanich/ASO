@@ -6,7 +6,7 @@
 
         public string LastName { get; init; }
 
-        private string Patronymic { get; init; }
+        public string Patronymic { get; init; }
 
         public string Email { get; init; }
         public string UserName { get; init; }
