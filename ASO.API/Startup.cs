@@ -24,7 +24,7 @@ namespace ASO.API
 
             services.ConfigureDatabase(Configuration);
             services.ConfigureAspNetIdentity();
-            services.ConfigureIdentityServer(Configuration);
+            services.ConfigureAuth(Configuration);
             services.ConfigureAutomapper();
             services.ConfigureServices();
         }
@@ -44,8 +44,6 @@ namespace ASO.API
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

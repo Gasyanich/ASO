@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using ASO.DataAccess.Entities;
 using ASO.Models.DTO;
-using ASO.Services.Helpers;
 using ASO.Services.Interfaces;
-using IdentityModel.Client;
 using Microsoft.AspNetCore.Identity;
 
 namespace ASO.Services
@@ -20,24 +18,11 @@ namespace ASO.Services
 
         public async Task<UserLoginDto> LoginAsync(UserLoginDto userLogin)
         {
+            // TODO
             using var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
 
-            var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
-            {
-                Address = disco.TokenEndpoint,
-                ClientId = "spa.aso.react",
-                UserName = userLogin.Email,
-                Password = userLogin.Password
-            });
 
-            if (tokenResponse.IsError)
-                return userLogin with {IsSuccess = false};
-
-            var accessToken = tokenResponse.AccessToken;
-            var role = accessToken.GetIdentityRole();
-
-            return userLogin with {IsSuccess = true, AccessToken = accessToken, Role = role};
+            return userLogin with {IsSuccess = true};
         }
 
         public async Task<bool> ConfirmEmailAsync(long userId, string token)
