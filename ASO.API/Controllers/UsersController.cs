@@ -40,7 +40,7 @@ namespace ASO.API.Controllers
             return await RegisterAnyUserAsync(request, true);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Director,Manager")]
         [HttpGet("roles")]
         public async Task<IActionResult> GetAvailableRoles()
         {

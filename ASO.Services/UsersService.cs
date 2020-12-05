@@ -65,7 +65,7 @@ namespace ASO.Services
 
             var message = GetEmailBodyMessage(userPassword, confirmationLink);
 
-            await _emailService.SendAsync(email, "Подтверждение регистрации на сайте Автошкола онлайн", message, true);
+            await _emailService.SendAsync(email, "Подтверждение регистрации на сайте Автошкола онлайн", message);
         }
 
         private string GetEmailBodyMessage(string userPassword, string confirmationLink)
