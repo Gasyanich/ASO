@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASO.DataAccess
 {
-    public class DataContext : IdentityDbContext<User, IdentityRole<long>, long>
+    public class DataContext : IdentityDbContext<User, UserRole, long>
     {
         public DataContext(DbContextOptions options) : base(options)
         {

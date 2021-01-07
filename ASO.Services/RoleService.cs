@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ASO.DataAccess.Entities;
 using ASO.Models.DTO;
 using ASO.Services.Interfaces;
 using AutoMapper;
@@ -13,7 +14,7 @@ namespace ASO.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly RoleManager<IdentityRole<long>> _roleManager;
+        private readonly RoleManager<UserRole> _roleManager;
         private readonly IMapper _mapper;
 
         public const string Director = "Director";
@@ -22,7 +23,7 @@ namespace ASO.Services
         public const string Admin = "Admin";
         public const string Teacher = "Teacher";
 
-        public RoleService(RoleManager<IdentityRole<long>> roleManager, IMapper mapper)
+        public RoleService(RoleManager<UserRole> roleManager, IMapper mapper)
         {
             _roleManager = roleManager;
             _mapper = mapper;

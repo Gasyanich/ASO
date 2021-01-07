@@ -10,9 +10,9 @@ namespace ASO.Services.Bootstrap
         public static void ConfigureAspNetIdentity(this IServiceCollection services)
         {
             services.AddIdentityCore<User>()
-                .AddRoles<IdentityRole<long>>()
+                .AddRoles<UserRole>()
                 .AddUserManager<UserManager<User>>()
-                .AddRoleManager<RoleManager<IdentityRole<long>>>()
+                .AddRoleManager<RoleManager<UserRole>>()
                 .AddSignInManager<SignInManager<User>>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
