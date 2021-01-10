@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ASO.DataAccess.Entities;
 using ASO.Models.DTO;
+using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -26,17 +27,7 @@ namespace ASO.Services
 
         public async Task<UserLoginDto> LoginAsync(UserLoginDto userLogin)
         {
-            var user = await _userManager.FindByEmailAsync(userLogin.Email);
-
-            if (user == null)
-                return userLogin with {IsSuccess = false};
-
-            var roles = await _userManager.GetRolesAsync(user);
-            var role = roles.First();
-
-            var token = GenerateJwtToken(user, role);
-
-            return userLogin with {IsSuccess = true, AccessToken = token, Role = role};
+            return null;
         }
 
         public async Task<bool> ConfirmEmailAsync(long userId, string token)

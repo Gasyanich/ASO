@@ -1,6 +1,4 @@
-﻿using ASO.Models.DTO;
-using ASO.Models.Requests;
-using ASO.Models.Responses;
+﻿
 using AutoMapper;
 
 namespace ASO.Models.Mappings
@@ -9,8 +7,8 @@ namespace ASO.Models.Mappings
     {
         public LoginProfile()
         {
-            CreateMap<LoginRequest, UserLoginDto>();
-            CreateMap<UserLoginDto, LoginResponse>();
+            //CreateMap<UserLoginDto, UserLoginDto>();
+            //CreateMap<UserLoginDto, LoginResponse>();
         }
     }
 }

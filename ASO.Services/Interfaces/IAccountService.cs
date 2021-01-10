@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ASO.Models.DTO;
+using ASO.Models.DTO.Users;
 
 namespace ASO.Services.Interfaces
 {

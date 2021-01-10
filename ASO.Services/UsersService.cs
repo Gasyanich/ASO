@@ -1,12 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ASO.DataAccess;
 using ASO.DataAccess.Entities;
+using ASO.Models.Constants;
 using ASO.Models.DTO;
+using ASO.Models.DTO.Users;
+using ASO.Services.Helpers;
 using ASO.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using NETCore.MailKit.Core;
 
 namespace ASO.Services
@@ -18,13 +26,19 @@ namespace ASO.Services
         private readonly IMapper _mapper;
         private readonly IUrlHelper _urlHelper;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<UserRole> _roleManager;
+        private readonly IRoleService _roleService;
+        private readonly DataContext _dataContext;
 
         public UsersService(
             IMapper mapper,
             IEmailService emailService,
             UserManager<User> userManager,
             IUrlHelperFactory urlHelperFactory,
-            IActionContextAccessor actionContextAccessor)
+            IActionContextAccessor actionContextAccessor,
+            RoleManager<UserRole> roleManager,
+            IRoleService roleService,
+            DataContext dataContext)
         {
             _actionContext = actionContextAccessor.ActionContext;
 
@@ -32,15 +46,14 @@ namespace ASO.Services
             _emailService = emailService;
             _urlHelper = urlHelperFactory.GetUrlHelper(_actionContext);
             _userManager = userManager;
-        }
-        public async Task<IdentityResult> RegisterUserAsync(UserRegisterDto userRegister)
-        {
-            return await CreateUserAsync(userRegister);
+            _roleManager = roleManager;
+            _roleService = roleService;
+            _dataContext = dataContext;
         }
 
-        private async Task<IdentityResult> CreateUserAsync(UserRegisterDto userRegister)
+        public async Task<UserDto> RegisterUserAsync(UserRegisterDto userRegisterDto, string role)
         {
-            var user = _mapper.Map<User>(userRegister);
+            var user = _mapper.Map<User>(userRegisterDto);
             var password = "Simple123";
 
             var result = await _userManager.CreateAsync(user, password);
@@ -50,13 +63,101 @@ namespace ASO.Services
                 var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 await SendConfirmEmailAsync(user.Id, emailConfirmationToken, user.Email, password);
+
+                await _userManager.AddToRoleAsync(user, role);
             }
 
-            await _userManager.AddToRoleAsync(user, userRegister.Role);
-
-            return result;
+            return await GetUserWithRole(user);
         }
-        
+
+        public async Task<UserDto> GetUserAsync(long userId)
+        {
+            var user = await FindUserById(userId);
+
+            return await GetUserWithRole(user);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetAvailableUsersAsync()
+        {
+            //var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
+            //var role = accessToken.GetIdentityRole();
+            var role = RolesConstants.Manager;
+
+            var availableRoles = await _roleService.GetAvailableRolesAsync(role);
+
+            var availableUserRoles = await _dataContext.UserRoles
+                .Where(userRole => availableRoles.Select(roleDto => roleDto.Id).Contains(userRole.RoleId))
+                .ToListAsync();
+
+            var usersToRoles = availableUserRoles.ToDictionary(
+                userRole => userRole.UserId,
+                userRole => availableRoles.First(avRole => avRole.Id == userRole.RoleId)
+            );
+
+            var availableUsers = await _userManager.Users
+                .Where(user => usersToRoles.Any(kv => kv.Key == user.Id))
+                .ToListAsync();
+
+            //var allUsers = await _userManager.Users.ToListAsync();
+
+            //var availableUsers = allUsers.Where(user => usersToRoles.ContainsKey(user.Id));
+            var availableUsersDto = _mapper.Map<IEnumerable<UserDto>>(availableUsers).ToList();
+
+            foreach (var userDto in availableUsersDto)
+                userDto.Role = usersToRoles[userDto.Id];
+
+
+            return availableUsersDto;
+        }
+
+        public async Task<UserDto> UpdateUserAsync(long id, UserUpdateDto userDto)
+        {
+            var user = await FindUserById(id);
+
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.Patronymic = userDto.Patronymic;
+            user.PhoneNumber = userDto.PhoneNumber;
+
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return await GetUserWithRole(user);
+
+            return null;
+        }
+
+        public async Task DeleteUserAsync(long id)
+        {
+            var userToDelete = await FindUserById(id);
+
+            await _userManager.DeleteAsync(userToDelete);
+        }
+
+        public async Task<bool> UserExistAsync(long id)
+        {
+            return await FindUserById(id) != null;
+        }
+
+        #region Private methods
+
+        private async Task<UserDto> GetUserWithRole(User user)
+        {
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var userRole = await _roleManager.FindByNameAsync(userRoles.First());
+
+            var userDto = _mapper.Map<UserDto>(user);
+            userDto.Role = _mapper.Map<RoleDto>(userRole);
+
+            return userDto;
+        }
+
+        private async Task<User> FindUserById(long id)
+        {
+            return await _userManager.FindByIdAsync(id.ToString());
+        }
+
         private async Task SendConfirmEmailAsync(long userId, string token, string email, string userPassword)
         {
             var request = _actionContext.HttpContext.Request;
@@ -77,6 +178,7 @@ namespace ASO.Services
                    "\nЭто письмо отправлено автоматически, не отвечайте на него. " +
                    "Если Вы считаете, что письмо пришло к вам по ошибке, просто удалите его.";
         }
-       
+
+        #endregion
     }
 }

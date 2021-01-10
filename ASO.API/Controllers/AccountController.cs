@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ASO.Models.DTO;
-using ASO.Models.Requests;
-using ASO.Models.Responses;
+using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -22,13 +21,13 @@ namespace ASO.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromForm] LoginRequest request)
+        public async Task<IActionResult> LoginAsync([FromForm] UserLoginDto dto)
         {
-            var loginDto = _mapper.Map<UserLoginDto>(request);
+            //var loginDto = _mapper.Map<UserLoginDto>(dto);
 
-            var loginResult = await _accountService.LoginAsync(loginDto);
-            if (loginResult.IsSuccess)
-                return Ok(_mapper.Map<LoginResponse>(loginResult));
+            //var loginResult = await _accountService.LoginAsync(loginDto);
+            //if (loginResult.IsSuccess)
+            //    return Ok(_mapper.Map<LoginResponse>(loginResult));
 
             return Unauthorized();
         }

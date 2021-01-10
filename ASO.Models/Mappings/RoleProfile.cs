@@ -1,5 +1,5 @@
-﻿using ASO.Models.DTO;
-using ASO.Models.Responses;
+﻿using ASO.DataAccess.Entities;
+using ASO.Models.DTO;
 using AutoMapper;
 
 namespace ASO.Models.Mappings
@@ -8,7 +8,7 @@ namespace ASO.Models.Mappings
     {
         public RoleProfile()
         {
-            CreateMap<RoleDto, RoleResponse>();
+            CreateMap<UserRole, RoleDto>().ReverseMap();
         }
     }
 }

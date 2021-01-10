@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ASO.Models.Requests;
+using ASO.Models.DTO.Users;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +9,7 @@ namespace ASO.Services.Bootstrap
     {
         public static void ConfigureAutomapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(RegisterRequest).Assembly);
+            services.AddAutoMapper(typeof(UserRegisterDto).Assembly);
         }
     }
 }

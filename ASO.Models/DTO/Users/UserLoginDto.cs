@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ASO.Models.Requests
+namespace ASO.Models.DTO.Users
 {
-    public record LoginRequest
+    public record UserLoginDto
     {
         [Required]
         [EmailAddress]
