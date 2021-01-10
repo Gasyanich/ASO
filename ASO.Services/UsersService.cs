@@ -80,10 +80,8 @@ namespace ASO.Services
 
         public async Task<IEnumerable<UserDto>> GetAvailableUsersAsync()
         {
-            //var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
-            //var role = accessToken.GetIdentityRole();
-
-            var role = RolesConstants.Manager;
+            var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
+            var role = accessToken.GetIdentityRole();
 
             var availableRoleIds = _roleService.GetAvailableRoleIds(role);
 

@@ -7,8 +7,8 @@ namespace ASO.Models.Mappings
     {
         public LoginProfile()
         {
-            //CreateMap<UserLoginDto, UserLoginDto>();
-            //CreateMap<UserLoginDto, LoginResponse>();
+            //CreateMap<LoginReqDto, LoginReqDto>();
+            //CreateMap<LoginReqDto, LoginResponse>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ASO.Models.DTO;
+using ASO.Models.DTO.Login;
 using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using AutoMapper;
@@ -12,24 +13,21 @@ namespace ASO.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly IMapper _mapper;
 
-        public AccountController(IAccountService accountService, IMapper mapper)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
-            _mapper = mapper;
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromForm] UserLoginDto dto)
+        public async Task<IActionResult> LoginAsync([FromForm] LoginReqDto reqDto)
         {
-            //var loginDto = _mapper.Map<UserLoginDto>(dto);
+            var loginResult = await _accountService.LoginAsync(reqDto);
 
-            //var loginResult = await _accountService.LoginAsync(loginDto);
-            //if (loginResult.IsSuccess)
-            //    return Ok(_mapper.Map<LoginResponse>(loginResult));
+            if (!loginResult.IsSuccess)
+                return Unauthorized(loginResult.ErrorMessage);
 
-            return Unauthorized();
+            return Ok(loginResult.Token);
         }
 
         [HttpGet]

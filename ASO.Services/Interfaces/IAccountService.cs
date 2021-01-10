@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using ASO.Models.DTO;
-using ASO.Models.DTO.Users;
+using ASO.Models.DTO.Login;
 
 namespace ASO.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<UserLoginDto> LoginAsync(UserLoginDto request);
+        Task<LoginResultDto> LoginAsync(LoginReqDto request);
 
         Task<bool> ConfirmEmailAsync(long userId, string token);
     }

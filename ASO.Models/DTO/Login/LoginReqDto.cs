@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ASO.Models.DTO.Users
+namespace ASO.Models.DTO.Login
 {
-    public record UserLoginDto
+    public record LoginReqDto
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; init; }
+        [Required] [EmailAddress] public string Email { get; init; }
 
         [Required]
         [DataType(DataType.Password)]

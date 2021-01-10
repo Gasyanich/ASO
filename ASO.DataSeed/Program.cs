@@ -34,12 +34,12 @@ namespace ASO.DataSeed
             var roleManager = services.GetService<RoleManager<UserRole>>();
             foreach (var userRole in Roles)
             {
-                await roleManager.CreateAsync(userRole);
+                //await roleManager.CreateAsync(userRole);
             }
 
             var userManager = services.GetService<UserManager<User>>();
 
-            await userManager.CreateAsync(Director);
+            await userManager.CreateAsync(Director, DefaultPassword);
             await userManager.AddToRoleAsync(Director, RolesConstants.Director);
         }
 
@@ -76,6 +76,8 @@ namespace ASO.DataSeed
                 Name = RolesConstants.Student,
             },
         };
+
+        private const string DefaultPassword = "Simple123";
 
         private static readonly User Director = new()
         {
