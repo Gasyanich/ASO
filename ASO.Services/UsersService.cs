@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ASO.DataAccess;
@@ -81,33 +82,27 @@ namespace ASO.Services
         {
             //var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
             //var role = accessToken.GetIdentityRole();
+
             var role = RolesConstants.Manager;
 
-            var availableRoles = _roleService.GetAvailableRoles(role);
+            var availableRoleIds = _roleService.GetAvailableRoleIds(role);
 
-            var availableUserRoles = await _dataContext.UserRoles
-                .Where(userRole => availableRoles.Select(roleDto => roleDto.Id).Contains(userRole.RoleId))
+            var availableUsersWithRoleId = await
+                (from userRole in _dataContext.UserRoles
+                    join user in _dataContext.Users on userRole.UserId equals user.Id
+                    where availableRoleIds.Contains(userRole.RoleId)
+                    select new Tuple<User, long>(user, userRole.RoleId))
                 .ToListAsync();
 
-            var usersToRoles = availableUserRoles.ToDictionary(
-                userRole => userRole.UserId,
-                userRole => availableRoles.First(avRole => avRole.Id == userRole.RoleId)
-            );
+            return availableUsersWithRoleId.Select(userWithRoleId =>
+            {
+                var (user, userRoleId) = userWithRoleId;
 
-            var availableUsers = await _userManager.Users
-                .Where(user => usersToRoles.Any(kv => kv.Key == user.Id))
-                .ToListAsync();
+                var userDto = _mapper.Map<UserDto>(user);
+                userDto.Role = _roleService.GetRoleById(userRoleId);
 
-            //var allUsers = await _userManager.Users.ToListAsync();
-
-            //var availableUsers = allUsers.Where(user => usersToRoles.ContainsKey(user.Id));
-            var availableUsersDto = _mapper.Map<IEnumerable<UserDto>>(availableUsers).ToList();
-
-            foreach (var userDto in availableUsersDto)
-                userDto.Role = usersToRoles[userDto.Id];
-
-
-            return availableUsersDto;
+                return userDto;
+            });
         }
 
         public async Task<UserDto> UpdateUserAsync(long id, UserUpdateDto userDto)

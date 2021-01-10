@@ -47,31 +47,31 @@ namespace ASO.DataSeed
         {
             new UserRole
             {
-                Id = 1,
+                Id = RolesConstants.DirectorId,
                 DisplayName = "Директор",
                 Name = RolesConstants.Director,
             },
             new UserRole
             {
-                Id = 2,
+                Id = RolesConstants.AdminId,
                 DisplayName = "Администратор",
                 Name = RolesConstants.Admin,
             },
             new UserRole
             {
-                Id = 3,
+                Id = RolesConstants.TeacherId,
                 DisplayName = "Преподаватель",
                 Name = RolesConstants.Teacher,
             },
             new UserRole
             {
-                Id = 4,
+                Id = RolesConstants.ManagerId,
                 DisplayName = "Менеджер",
                 Name = RolesConstants.Manager,
             },
             new UserRole
             {
-                Id = 5,
+                Id = RolesConstants.StudentId,
                 DisplayName = "Обучающийся",
                 Name = RolesConstants.Student,
             },

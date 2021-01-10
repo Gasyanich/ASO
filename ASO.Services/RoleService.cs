@@ -11,43 +11,41 @@ namespace ASO.Services
         private readonly Dictionary<long, RoleDto> _roleToRoleId = new()
         {
             {
-                1, new RoleDto
+                RolesConstants.DirectorId, new RoleDto
                 {
-                    Id = 1,
+                    Id = RolesConstants.DirectorId,
                     DisplayName = "Директор",
                     Name = RolesConstants.Director
                 }
             },
             {
-                2,
-                new RoleDto
+                RolesConstants.AdminId, new RoleDto
                 {
-                    Id = 2,
+                    Id = RolesConstants.AdminId,
                     DisplayName = "Администратор",
                     Name = RolesConstants.Admin
                 }
             },
             {
-                3,
-                new RoleDto
+                RolesConstants.TeacherId, new RoleDto
                 {
-                    Id = 3,
+                    Id = RolesConstants.TeacherId,
                     DisplayName = "Преподаватель",
                     Name = RolesConstants.Teacher
                 }
             },
             {
-                4, new RoleDto
+                RolesConstants.ManagerId, new RoleDto
                 {
-                    Id = 4,
+                    Id = RolesConstants.ManagerId,
                     DisplayName = "Менеджер",
                     Name = RolesConstants.Manager
                 }
             },
             {
-                5, new RoleDto
+                RolesConstants.StudentId, new RoleDto
                 {
-                    Id = 5,
+                    Id = RolesConstants.StudentId,
                     DisplayName = "Обучающийся",
                     Name = RolesConstants.Student
                 }
@@ -56,25 +54,28 @@ namespace ASO.Services
 
         public IEnumerable<RoleDto> GetAvailableRoles(string role)
         {
-            var availableRoleIds = role switch
-            {
-                RolesConstants.Director => new[]
-                {
-                    RolesConstants.ManagerId, RolesConstants.StudentId, RolesConstants.TeacherId
-                },
-                RolesConstants.Manager => new[]
-                {
-                    RolesConstants.StudentId
-                },
-                RolesConstants.Admin => new[]
-                {
-                    RolesConstants.DirectorId
-                },
-                _ => Array.Empty<long>()
-            };
+            var availableRoleIds = GetAvailableRoleIds(role);
 
             foreach (var availableRoleId in availableRoleIds) yield return _roleToRoleId[availableRoleId];
         }
+
+        public IEnumerable<long> GetAvailableRoleIds(string role) => role switch
+        {
+            RolesConstants.Director => new[]
+            {
+                RolesConstants.ManagerId, RolesConstants.StudentId, RolesConstants.TeacherId
+            },
+            RolesConstants.Manager => new[]
+            {
+                RolesConstants.StudentId
+            },
+            RolesConstants.Admin => new[]
+            {
+                RolesConstants.DirectorId
+            },
+            _ => Array.Empty<long>()
+        };
+
 
         public RoleDto GetRoleById(long roleId)
         {

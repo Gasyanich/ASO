@@ -8,6 +8,8 @@ namespace ASO.Services.Interfaces
     {
         IEnumerable<RoleDto> GetAvailableRoles(string role);
 
+        IEnumerable<long> GetAvailableRoleIds(string role);
+
         RoleDto GetRoleById(long userRoleId);
     }
 }
