@@ -83,7 +83,7 @@ namespace ASO.Services
             //var role = accessToken.GetIdentityRole();
             var role = RolesConstants.Manager;
 
-            var availableRoles = await _roleService.GetAvailableRolesAsync(role);
+            var availableRoles = _roleService.GetAvailableRoles(role);
 
             var availableUserRoles = await _dataContext.UserRoles
                 .Where(userRole => availableRoles.Select(roleDto => roleDto.Id).Contains(userRole.RoleId))

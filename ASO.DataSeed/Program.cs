@@ -43,30 +43,35 @@ namespace ASO.DataSeed
             await userManager.AddToRoleAsync(Director, RolesConstants.Director);
         }
 
-        private static List<UserRole> Roles = new()
+        private static readonly List<UserRole> Roles = new()
         {
             new UserRole
             {
+                Id = 1,
                 DisplayName = "Директор",
                 Name = RolesConstants.Director,
             },
             new UserRole
             {
+                Id = 2,
                 DisplayName = "Администратор",
                 Name = RolesConstants.Admin,
             },
             new UserRole
             {
+                Id = 3,
                 DisplayName = "Преподаватель",
                 Name = RolesConstants.Teacher,
             },
             new UserRole
             {
+                Id = 4,
                 DisplayName = "Менеджер",
                 Name = RolesConstants.Manager,
             },
             new UserRole
             {
+                Id = 5,
                 DisplayName = "Обучающийся",
                 Name = RolesConstants.Student,
             },

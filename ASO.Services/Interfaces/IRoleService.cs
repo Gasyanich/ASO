@@ -6,6 +6,8 @@ namespace ASO.Services.Interfaces
 {
     public interface IRoleService
     {
-        Task<IEnumerable<RoleDto>> GetAvailableRolesAsync(string role);
+        IEnumerable<RoleDto> GetAvailableRoles(string role);
+
+        RoleDto GetRoleById(long userRoleId);
     }
 }

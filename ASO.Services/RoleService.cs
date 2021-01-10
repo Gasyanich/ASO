@@ -1,53 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ASO.DataAccess;
-using ASO.DataAccess.Entities;
 using ASO.Models.Constants;
 using ASO.Models.DTO;
 using ASO.Services.Interfaces;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace ASO.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly IMapper _mapper;
-        private readonly RoleManager<UserRole> _roleManager;
-
-        public RoleService(RoleManager<UserRole> roleManager, IMapper mapper)
+        private readonly Dictionary<long, RoleDto> _roleToRoleId = new()
         {
-            _roleManager = roleManager;
-            _mapper = mapper;
-        }
+            {
+                1, new RoleDto
+                {
+                    Id = 1,
+                    DisplayName = "Директор",
+                    Name = RolesConstants.Director
+                }
+            },
+            {
+                2,
+                new RoleDto
+                {
+                    Id = 2,
+                    DisplayName = "Администратор",
+                    Name = RolesConstants.Admin
+                }
+            },
+            {
+                3,
+                new RoleDto
+                {
+                    Id = 3,
+                    DisplayName = "Преподаватель",
+                    Name = RolesConstants.Teacher
+                }
+            },
+            {
+                4, new RoleDto
+                {
+                    Id = 4,
+                    DisplayName = "Менеджер",
+                    Name = RolesConstants.Manager
+                }
+            },
+            {
+                5, new RoleDto
+                {
+                    Id = 5,
+                    DisplayName = "Обучающийся",
+                    Name = RolesConstants.Student
+                }
+            }
+        };
 
-        public async Task<IEnumerable<RoleDto>> GetAvailableRolesAsync(string role)
+        public IEnumerable<RoleDto> GetAvailableRoles(string role)
         {
-            var availableRoleString = role switch
+            var availableRoleIds = role switch
             {
                 RolesConstants.Director => new[]
                 {
-                    RolesConstants.Manager, RolesConstants.Student, RolesConstants.Teacher
+                    RolesConstants.ManagerId, RolesConstants.StudentId, RolesConstants.TeacherId
                 },
                 RolesConstants.Manager => new[]
                 {
-                    RolesConstants.Student
+                    RolesConstants.StudentId
                 },
                 RolesConstants.Admin => new[]
                 {
-                    RolesConstants.Director
+                    RolesConstants.DirectorId
                 },
-                _ => Array.Empty<string>()
+                _ => Array.Empty<long>()
             };
 
-            var availableRoles = await _roleManager.Roles
-                .Where(userRole => availableRoleString.Contains(userRole.Name))
-                .ToListAsync();
+            foreach (var availableRoleId in availableRoleIds) yield return _roleToRoleId[availableRoleId];
+        }
 
-            return _mapper.Map<IEnumerable<RoleDto>>(availableRoles);
+        public RoleDto GetRoleById(long roleId)
+        {
+            return _roleToRoleId[roleId];
         }
     }
 }
