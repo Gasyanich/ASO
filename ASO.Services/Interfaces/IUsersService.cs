@@ -18,6 +18,6 @@ namespace ASO.Services.Interfaces
         Task DeleteUserAsync(long id);
 
         Task<bool> UserExistAsync(long id);
-        Task<IEnumerable<UserDto>> GetUsersByRolesAsync(IEnumerable<string> roleIds);
+        Task<IEnumerable<UserDto>> GetUsersByRolesAsync(IEnumerable<string> roleNames);
     }
 }

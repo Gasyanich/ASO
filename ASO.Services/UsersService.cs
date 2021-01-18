@@ -136,8 +136,9 @@ namespace ASO.Services
         {
             return await GetUsersByRoles(roleNames);
         }
-
+        
         #region Private methods
+        
         private async Task<IEnumerable<UserDto>> GetUsersByRoles(IEnumerable<string> roleNames)
         {
             var usersWithRoleId = await

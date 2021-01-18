@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ASO.Models.DTO;
 using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
@@ -38,6 +39,13 @@ namespace ASO.API.Controllers.Users
             var user = await _usersService.GetUserAsync(id);
 
             return Ok(user);
+        }
+        [HttpGet("Roles")]
+        public virtual async Task<IActionResult> GetUsersByRoleAsync()
+        {
+            var usersByRoles = await _usersService.GetUsersByRolesAsync(new []{Role});
+
+            return Ok(usersByRoles);
         }
 
         [HttpPut]
