@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ASO.Models.DTO;
 using ASO.Models.DTO.Users;
 
 namespace ASO.Services.Interfaces
@@ -18,6 +17,9 @@ namespace ASO.Services.Interfaces
         Task DeleteUserAsync(long id);
 
         Task<bool> UserExistAsync(long id);
+
         Task<IEnumerable<UserDto>> GetUsersByRolesAsync(IEnumerable<string> roleNames);
+
+        Task<UserDto> GetMeAsync();
     }
 }

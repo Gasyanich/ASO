@@ -14,5 +14,12 @@ namespace ASO.API.Common.Constants
         public const string TeachersControllerRoles = RolesConstants.Director;
 
         public const string ManagersControllerRoles = RolesConstants.Director;
+
+
+        public const string MeRoles = RolesConstants.Director + "," +
+                                      RolesConstants.Admin + "," +
+                                      RolesConstants.Teacher + "," +
+                                      RolesConstants.Student + "," +
+                                      RolesConstants.Manager;
     }
 }

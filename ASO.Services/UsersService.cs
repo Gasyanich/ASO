@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ASO.DataAccess;
 using ASO.DataAccess.Entities;
@@ -61,9 +62,10 @@ namespace ASO.Services
 
             if (result.Succeeded)
             {
-                var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                // TODO: вернуть после окончания разработки
+                //var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                await SendConfirmEmailAsync(user.Id, emailConfirmationToken, user.Email, password);
+                //await SendConfirmEmailAsync(user.Id, emailConfirmationToken, user.Email, password);
 
                 await _userManager.AddToRoleAsync(user, role);
             }
@@ -112,7 +114,6 @@ namespace ASO.Services
             user.Patronymic = userDto.Patronymic;
             user.PhoneNumber = userDto.PhoneNumber;
 
-
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
@@ -132,13 +133,24 @@ namespace ASO.Services
         {
             return await FindUserById(id) != null;
         }
+
         public async Task<IEnumerable<UserDto>> GetUsersByRolesAsync(IEnumerable<string> roleNames)
         {
             return await GetUsersByRoles(roleNames);
         }
-        
+
+        public async Task<UserDto> GetMeAsync()
+        {
+            var userClaims = _actionContext.HttpContext.User;
+            var email = userClaims.FindFirst(ClaimTypes.Email)?.Value;
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            return await GetUserWithRole(user);
+        }
+
         #region Private methods
-        
+
         private async Task<IEnumerable<UserDto>> GetUsersByRoles(IEnumerable<string> roleNames)
         {
             var usersWithRoleId = await
@@ -159,6 +171,7 @@ namespace ASO.Services
                 return userDto;
             });
         }
+
         private async Task<UserDto> GetUserWithRole(User user)
         {
             var userRoles = await _userManager.GetRolesAsync(user);

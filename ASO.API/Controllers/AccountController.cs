@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using ASO.API.Common.Constants;
 using ASO.Models.DTO.Login;
 using ASO.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASO.API.Controllers
@@ -10,16 +12,19 @@ namespace ASO.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IUsersService _usersService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IUsersService usersService)
         {
             _accountService = accountService;
+            _usersService = usersService;
         }
 
         [HttpGet("me")]
+        [Authorize(Roles = AuthorizeConstants.MeRoles)]
         public async Task<IActionResult> MeAsync()
         {
-            return null;
+            return Ok(await _usersService.GetMeAsync());
         }
 
         [HttpPost("login")]
@@ -33,12 +38,13 @@ namespace ASO.API.Controllers
             return Ok(loginResult.Token);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(long usid, string tkn)
-        {
-            var result = await _accountService.ConfirmEmailAsync(usid, tkn);
+        // TODO: вернуть после разработки
+        //[HttpGet]
+        //public async Task<IActionResult> ConfirmEmail(long usid, string tkn)
+        //{
+        //    var result = await _accountService.ConfirmEmailAsync(usid, tkn);
 
-            return result ? Ok("Email подтвержден.") : BadRequest();
-        }
+        //    return result ? Ok("Email подтвержден.") : BadRequest();
+        //}
     }
 }
