@@ -40,7 +40,8 @@ namespace ASO.API.Controllers.Users
 
             return Ok(user);
         }
-        [HttpGet("Roles")]
+
+        [HttpGet]
         public virtual async Task<IActionResult> GetUsersByRoleAsync()
         {
             var usersByRoles = await _usersService.GetUsersByRolesAsync(new []{Role});

@@ -34,7 +34,7 @@ namespace ASO.DataSeed
             var roleManager = services.GetService<RoleManager<UserRole>>();
             foreach (var userRole in Roles)
             {
-                //await roleManager.CreateAsync(userRole);
+                await roleManager.CreateAsync(userRole);
             }
 
             var userManager = services.GetService<UserManager<User>>();
