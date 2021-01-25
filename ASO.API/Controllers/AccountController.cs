@@ -1,15 +1,12 @@
 ﻿using System.Threading.Tasks;
-using ASO.Models.DTO;
 using ASO.Models.DTO.Login;
-using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASO.API.Controllers
 {
+    [Route("api")]
     [ApiController]
-    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -17,6 +14,12 @@ namespace ASO.API.Controllers
         public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
+        }
+
+        [HttpGet("me")]
+        public async Task<IActionResult> MeAsync()
+        {
+            return null;
         }
 
         [HttpPost("login")]

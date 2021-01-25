@@ -6,6 +6,13 @@ namespace ASO.API.Common.Constants
     {
         public const string UsersControllerRoles = RolesConstants.Director + "," +
                                                    RolesConstants.Admin + "," +
-                                                   RolesConstants.Teacher + ",";
+                                                   RolesConstants.Manager;
+
+        public const string StudentsControllerRoles = RolesConstants.Manager + "," +
+                                                      RolesConstants.Director;
+
+        public const string TeachersControllerRoles = RolesConstants.Director;
+
+        public const string ManagersControllerRoles = RolesConstants.Director;
     }
 }

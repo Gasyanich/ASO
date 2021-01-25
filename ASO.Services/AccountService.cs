@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ASO.DataAccess;
 using ASO.DataAccess.Entities;
-using ASO.Models.DTO;
 using ASO.Models.DTO.Login;
-using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +16,10 @@ namespace ASO.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly DataContext _dataContext;
         private readonly IRoleService _roleService;
+        private readonly UserManager<User> _userManager;
 
         public AccountService(UserManager<User> userManager, IConfiguration configuration, DataContext dataContext,
             IRoleService roleService)

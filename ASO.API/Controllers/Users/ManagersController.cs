@@ -8,13 +8,13 @@ namespace ASO.API.Controllers.Users
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = AuthorizeConstants.TeachersControllerRoles)]
-    public class TeachersController : BaseUsersController
+    [Authorize(Roles = AuthorizeConstants.ManagersControllerRoles)]
+    public class ManagersController : BaseUsersController
     {
-        public TeachersController(IUsersService usersService) : base(usersService)
+        public ManagersController(IUsersService usersService) : base(usersService)
         {
         }
 
-        protected override string Role => RolesConstants.Teacher;
+        protected override string Role => RolesConstants.Manager;
     }
 }

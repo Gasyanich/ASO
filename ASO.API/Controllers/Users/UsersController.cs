@@ -26,7 +26,8 @@ namespace ASO.API.Controllers.Users
 
             return Ok(availableUsers);
         }
-        [HttpGet("Roles")]
+
+        [HttpGet("roles")]
         public async Task<IActionResult> GetUsersByRoleAsync([FromQuery] IEnumerable<string> roleNames)
         {
             var usersByRoles = await _usersService.GetUsersByRolesAsync(roleNames);
