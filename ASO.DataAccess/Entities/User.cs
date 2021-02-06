@@ -9,6 +9,8 @@ namespace ASO.DataAccess.Entities
 
         [Required] [MaxLength(100)] public string LastName { get; set; }
 
+        [Required] public Sex Sex { get; set; }
+
         [MaxLength(100)] public string Patronymic { get; set; }
     }
 }

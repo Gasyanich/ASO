@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ASO.DataAccess.Entities;
 
 namespace ASO.Models.DTO.Users
 {
@@ -13,5 +14,7 @@ namespace ASO.Models.DTO.Users
         [Required] [EmailAddress] public string Email { get; set; }
 
         [Required] [Phone] public string PhoneNumber { get; set; }
+
+        [Required] public Sex Sex { get; set; }
     }
 }

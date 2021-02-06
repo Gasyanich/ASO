@@ -113,6 +113,7 @@ namespace ASO.Services
             user.LastName = userDto.LastName;
             user.Patronymic = userDto.Patronymic;
             user.PhoneNumber = userDto.PhoneNumber;
+            user.Sex = userDto.Sex;
 
             var result = await _userManager.UpdateAsync(user);
 

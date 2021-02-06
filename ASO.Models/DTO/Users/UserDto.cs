@@ -1,4 +1,6 @@
-﻿namespace ASO.Models.DTO.Users
+﻿using ASO.DataAccess.Entities;
+
+namespace ASO.Models.DTO.Users
 {
     public record UserDto
     {
@@ -15,5 +17,7 @@
         public string PhoneNumber { get; set; }
 
         public RoleDto Role { get; set; }
+
+        public Sex Sex { get; set; }
     }
 }
