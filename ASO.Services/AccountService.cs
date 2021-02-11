@@ -64,6 +64,14 @@ namespace ASO.Services
             return result with {IsSuccess = true, Token = token};
         }
 
+        public async Task<User> GetCurrentUserAsync()
+        {
+            var userClaims = _actionContext.HttpContext.User;
+            var email = userClaims.FindFirst(ClaimTypes.Email)?.Value;
+
+            return await _userManager.FindByEmailAsync(email);
+        }
+
         public async Task<bool> ConfirmEmailAsync(long userId, string token)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -78,12 +86,9 @@ namespace ASO.Services
 
         public async Task<UserDto> GetMeAsync()
         {
-            var userClaims = _actionContext.HttpContext.User;
-            var email = userClaims.FindFirst(ClaimTypes.Email)?.Value;
+            var currentUser = await GetCurrentUserAsync();
 
-            var user = await _userManager.FindByEmailAsync(email);
-
-            return await _usersService.GetUserAsync(user.Id);
+            return await _usersService.GetUserAsync(currentUser.Id);
         }
 
         private string GenerateJwtToken(User user, string roleName)
@@ -93,7 +98,6 @@ namespace ASO.Services
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                //Expires = DateTime.UtcNow.Add(TimeSpan.FromSeconds(int.MaxValue)).ToUniversalTime(),
                 Expires = DateTime.UtcNow.AddDays(365),
                 Subject = new ClaimsIdentity(new[]
                 {
