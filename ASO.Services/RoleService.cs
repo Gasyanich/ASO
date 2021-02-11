@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using ASO.Models.Constants;
-using ASO.Models.DTO;
+using ASO.Models.DTO.Results;
+using ASO.Models.DTO.Users;
+using ASO.Services.Helpers;
 using ASO.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace ASO.Services
 {
     public class RoleService : IRoleService
     {
+        private readonly ActionContext _actionContext;
+
         private readonly Dictionary<long, RoleDto> _roleToRoleId = new()
         {
             {
@@ -52,30 +61,59 @@ namespace ASO.Services
             }
         };
 
-        public IEnumerable<RoleDto> GetAvailableRoles(string role)
+        public RoleService(IActionContextAccessor actionContextAccessor)
         {
-            var availableRoleIds = GetAvailableRoleIds(role);
-
-            foreach (var availableRoleId in availableRoleIds) yield return _roleToRoleId[availableRoleId];
+            _actionContext = actionContextAccessor.ActionContext;
         }
 
-        public IEnumerable<long> GetAvailableRoleIds(string role) => role switch
+        public async Task<BaseResultDto> CheckUserCanAccessRoles(List<string> roles)
         {
-            RolesConstants.Director => new[]
-            {
-                RolesConstants.ManagerId, RolesConstants.StudentId, RolesConstants.TeacherId
-            },
-            RolesConstants.Manager => new[]
-            {
-                RolesConstants.StudentId
-            },
-            RolesConstants.Admin => new[]
-            {
-                RolesConstants.DirectorId
-            },
-            _ => Array.Empty<long>()
-        };
+            var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
+            var currentUserRole = accessToken.GetIdentityRole();
 
+            var availableRolesIds = currentUserRole switch
+            {
+                RolesConstants.Director => new[]
+                {
+                    RolesConstants.ManagerId, RolesConstants.StudentId, RolesConstants.TeacherId
+                },
+                RolesConstants.Manager => new[]
+                {
+                    RolesConstants.StudentId
+                },
+                RolesConstants.Admin => new[]
+                {
+                    RolesConstants.DirectorId
+                },
+                _ => Array.Empty<long>()
+            };
+
+            var result = new BaseResultDto(true);
+
+            var availableRolesNames = availableRolesIds
+                .Select(roleId => _roleToRoleId[roleId]).Select(role => role.Name)
+                .ToList();
+
+            if (!availableRolesNames.Any())
+                return result with
+                {
+                    IsSuccess = false, ErrorMessage = "Текущий пользователь не имеет доступа ни к одной роли"
+                };
+
+            var isUsersAccessToAllRoles = roles.All(role => availableRolesNames.Contains(role));
+
+            if (isUsersAccessToAllRoles)
+                return result;
+
+            var nonAccessRoles = roles.Except(availableRolesNames);
+
+            return result with
+            {
+                IsSuccess = false,
+                ErrorMessage =
+                $"Текущий пользователь не может получить доступ к следующим ролям:{string.Join(',', nonAccessRoles)}"
+            };
+        }
 
         public RoleDto GetRoleById(long roleId)
         {

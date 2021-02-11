@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ASO.Models.DTO;
+using ASO.Models.DTO.Results;
+using ASO.Models.DTO.Users;
 
 namespace ASO.Services.Interfaces
 {
     public interface IRoleService
     {
-        IEnumerable<RoleDto> GetAvailableRoles(string role);
-
-        IEnumerable<long> GetAvailableRoleIds(string role);
+        Task<BaseResultDto> CheckUserCanAccessRoles(List<string> roles);
 
         RoleDto GetRoleById(long userRoleId);
     }

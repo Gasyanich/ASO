@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ASO.DataAccess;
 using ASO.DataAccess.Entities;
-using ASO.Models.Constants;
 using ASO.Models.DTO;
 using ASO.Models.DTO.Users;
-using ASO.Services.Helpers;
 using ASO.Services.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -24,13 +20,13 @@ namespace ASO.Services
     public class UsersService : IUsersService
     {
         private readonly ActionContext _actionContext;
+        private readonly DataContext _dataContext;
         private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
-        private readonly IUrlHelper _urlHelper;
-        private readonly UserManager<User> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
         private readonly IRoleService _roleService;
-        private readonly DataContext _dataContext;
+        private readonly IUrlHelper _urlHelper;
+        private readonly UserManager<User> _userManager;
 
         public UsersService(
             IMapper mapper,
@@ -53,6 +49,8 @@ namespace ASO.Services
             _dataContext = dataContext;
         }
 
+        #region CRUD
+
         public async Task<UserDto> RegisterUserAsync(UserRegisterDto userRegisterDto, string role)
         {
             var user = _mapper.Map<User>(userRegisterDto);
@@ -61,14 +59,12 @@ namespace ASO.Services
             var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
-            {
                 // TODO: вернуть после окончания разработки
                 //var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 //await SendConfirmEmailAsync(user.Id, emailConfirmationToken, user.Email, password);
 
                 await _userManager.AddToRoleAsync(user, role);
-            }
 
             return await GetUserWithRole(user);
         }
@@ -78,31 +74,6 @@ namespace ASO.Services
             var user = await FindUserById(userId);
 
             return await GetUserWithRole(user);
-        }
-
-        public async Task<IEnumerable<UserDto>> GetAvailableUsersAsync()
-        {
-            var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
-            var role = accessToken.GetIdentityRole();
-
-            var availableRoleIds = _roleService.GetAvailableRoleIds(role);
-
-            var availableUsersWithRoleId = await
-                (from userRole in _dataContext.UserRoles
-                    join user in _dataContext.Users on userRole.UserId equals user.Id
-                    where availableRoleIds.Contains(userRole.RoleId)
-                    select new Tuple<User, long>(user, userRole.RoleId))
-                .ToListAsync();
-
-            return availableUsersWithRoleId.Select(userWithRoleId =>
-            {
-                var (user, userRoleId) = userWithRoleId;
-
-                var userDto = _mapper.Map<UserDto>(user);
-                userDto.Role = _roleService.GetRoleById(userRoleId);
-
-                return userDto;
-            });
         }
 
         public async Task<UserDto> UpdateUserAsync(long id, UserUpdateDto userDto)
@@ -130,29 +101,7 @@ namespace ASO.Services
             await _userManager.DeleteAsync(userToDelete);
         }
 
-        public async Task<bool> UserExistAsync(long id)
-        {
-            return await FindUserById(id) != null;
-        }
-
         public async Task<IEnumerable<UserDto>> GetUsersByRolesAsync(IEnumerable<string> roleNames)
-        {
-            return await GetUsersByRoles(roleNames);
-        }
-
-        public async Task<UserDto> GetMeAsync()
-        {
-            var userClaims = _actionContext.HttpContext.User;
-            var email = userClaims.FindFirst(ClaimTypes.Email)?.Value;
-
-            var user = await _userManager.FindByEmailAsync(email);
-
-            return await GetUserWithRole(user);
-        }
-
-        #region Private methods
-
-        private async Task<IEnumerable<UserDto>> GetUsersByRoles(IEnumerable<string> roleNames)
         {
             var usersWithRoleId = await
                 (from userRole in _dataContext.UserRoles
@@ -170,8 +119,17 @@ namespace ASO.Services
                 userDto.Role = _roleService.GetRoleById(userRoleId);
 
                 return userDto;
-            });
+            }).OrderBy(userDto => userDto.Role.DisplayName);
         }
+
+        public async Task<bool> UserExistAsync(long id)
+        {
+            return await FindUserById(id) != null;
+        }
+
+        #endregion
+
+        #region Private methods
 
         private async Task<UserDto> GetUserWithRole(User user)
         {

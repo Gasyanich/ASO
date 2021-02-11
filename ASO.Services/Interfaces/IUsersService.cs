@@ -10,16 +10,12 @@ namespace ASO.Services.Interfaces
 
         Task<UserDto> GetUserAsync(long userId);
 
-        Task<IEnumerable<UserDto>> GetAvailableUsersAsync();
-
         Task<UserDto> UpdateUserAsync(long id, UserUpdateDto userDto);
 
         Task DeleteUserAsync(long id);
 
-        Task<bool> UserExistAsync(long id);
-
         Task<IEnumerable<UserDto>> GetUsersByRolesAsync(IEnumerable<string> roleNames);
 
-        Task<UserDto> GetMeAsync();
+        Task<bool> UserExistAsync(long id);
     }
 }

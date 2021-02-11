@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ASO.API.Common.Constants;
 using ASO.Services.Interfaces;
@@ -10,27 +11,26 @@ namespace ASO.API.Controllers.Users
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Roles = AuthorizeConstants.UsersControllerRoles)]
-    public class UsersController : ControllerBase
+    public class UsersController : AsoBaseController
     {
         private readonly IUsersService _usersService;
+        private readonly IRoleService _roleService;
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService, IRoleService roleService)
         {
             _usersService = usersService;
+            _roleService = roleService;
         }
-
+        
         [HttpGet]
-        public async Task<IActionResult> GetUsersAsync()
+        public async Task<IActionResult> GetUsersByRoleAsync([FromQuery(Name = "roles")] List<string> roles)
         {
-            var availableUsers = await _usersService.GetAvailableUsersAsync();
+            var isUserAccessRoles = await _roleService.CheckUserCanAccessRoles(roles);
 
-            return Ok(availableUsers);
-        }
+            if (!isUserAccessRoles.IsSuccess)
+                return BadResultRequest(isUserAccessRoles);
 
-        [HttpGet("roles")]
-        public async Task<IActionResult> GetUsersByRoleAsync([FromQuery] IEnumerable<string> roleNames)
-        {
-            var usersByRoles = await _usersService.GetUsersByRolesAsync(roleNames);
+            var usersByRoles = await _usersService.GetUsersByRolesAsync(roles);
 
             return Ok(usersByRoles);
         }

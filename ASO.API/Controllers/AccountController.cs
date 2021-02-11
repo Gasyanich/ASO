@@ -12,19 +12,17 @@ namespace ASO.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly IUsersService _usersService;
 
-        public AccountController(IAccountService accountService, IUsersService usersService)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
-            _usersService = usersService;
         }
 
         [HttpGet("me")]
         [Authorize(Roles = AuthorizeConstants.MeRoles)]
         public async Task<IActionResult> MeAsync()
         {
-            return Ok(await _usersService.GetMeAsync());
+            return Ok(await _accountService.GetMeAsync());
         }
 
         [HttpPost("login")]

@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using ASO.DataAccess;
 using ASO.DataAccess.Entities;
 using ASO.Models.DTO.Login;
+using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -16,25 +19,34 @@ namespace ASO.Services
 {
     public class AccountService : IAccountService
     {
+        private readonly ActionContext _actionContext;
         private readonly IConfiguration _configuration;
         private readonly DataContext _dataContext;
         private readonly IRoleService _roleService;
         private readonly UserManager<User> _userManager;
+        private readonly IUsersService _usersService;
 
-        public AccountService(UserManager<User> userManager, IConfiguration configuration, DataContext dataContext,
-            IRoleService roleService)
+
+        public AccountService(UserManager<User> userManager,
+            IConfiguration configuration,
+            DataContext dataContext,
+            IRoleService roleService,
+            IActionContextAccessor actionContextAccessor,
+            IUsersService usersService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _dataContext = dataContext;
             _roleService = roleService;
+            _usersService = usersService;
+            _actionContext = actionContextAccessor.ActionContext;
         }
 
         public async Task<LoginResultDto> LoginAsync(LoginReqDto loginReq)
         {
             var user = await _userManager.FindByEmailAsync(loginReq.Email);
 
-            var result = new LoginResultDto(false, "Неверный логин или пароль", string.Empty);
+            var result = new LoginResultDto(string.Empty, false, "Неверный логин или пароль");
 
             if (user == null)
                 return result;
@@ -62,6 +74,16 @@ namespace ASO.Services
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
             return result.Succeeded;
+        }
+
+        public async Task<UserDto> GetMeAsync()
+        {
+            var userClaims = _actionContext.HttpContext.User;
+            var email = userClaims.FindFirst(ClaimTypes.Email)?.Value;
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            return await _usersService.GetUserAsync(user.Id);
         }
 
         private string GenerateJwtToken(User user, string roleName)

@@ -1,4 +1,4 @@
-﻿namespace ASO.Models.DTO
+﻿namespace ASO.Models.DTO.Users
 {
     public record RoleDto
     {
