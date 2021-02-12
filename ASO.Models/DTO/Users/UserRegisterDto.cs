@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using ASO.DataAccess.Entities;
 
 namespace ASO.Models.DTO.Users
 {
+    /// <summary>
+    /// DTO на запрос регистрации пользователя
+    /// </summary>
     public record UserRegisterDto
     {
         [Required] public string FirstName { get; set; }
@@ -16,5 +20,8 @@ namespace ASO.Models.DTO.Users
         [Required] [Phone] public string PhoneNumber { get; set; }
 
         [Required] public Sex Sex { get; set; }
+
+        // не приходит с запросом
+        [JsonIgnore] public long RoleId { get; set; }
     }
 }

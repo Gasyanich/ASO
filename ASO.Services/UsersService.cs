@@ -51,24 +51,6 @@ namespace ASO.Services
 
         #region CRUD
 
-        public async Task<UserDto> RegisterUserAsync(UserRegisterDto userRegisterDto, string role)
-        {
-            var user = _mapper.Map<User>(userRegisterDto);
-            var password = "Simple123";
-
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (result.Succeeded)
-                // TODO: вернуть после окончания разработки
-                //var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                //await SendConfirmEmailAsync(user.Id, emailConfirmationToken, user.Email, password);
-
-                await _userManager.AddToRoleAsync(user, role);
-
-            return await GetUserWithRole(user);
-        }
-
         public async Task<UserDto> GetUserAsync(long userId)
         {
             var user = await FindUserById(userId);
@@ -145,27 +127,6 @@ namespace ASO.Services
         private async Task<User> FindUserById(long id)
         {
             return await _userManager.FindByIdAsync(id.ToString());
-        }
-
-        private async Task SendConfirmEmailAsync(long userId, string token, string email, string userPassword)
-        {
-            var request = _actionContext.HttpContext.Request;
-            var confirmationLink = _urlHelper.Action("ConfirmEmail", "Account",
-                new {usid = userId, tkn = token}, request.Scheme, request.Host.ToString());
-
-            var message = GetEmailBodyMessage(userPassword, confirmationLink);
-
-            await _emailService.SendAsync(email, "Подтверждение регистрации на сайте Автошкола онлайн", message);
-        }
-
-        private string GetEmailBodyMessage(string userPassword, string confirmationLink)
-        {
-            return "Здравствуйте!" +
-                   "\n\nВы зарегестрировались на сайте Автошкола онлайн." +
-                   $"\n\nВаш пароль:{userPassword}" +
-                   $"\nДля подтверждения регистрации пройдите по следующей ссылке - {confirmationLink}" +
-                   "\nЭто письмо отправлено автоматически, не отвечайте на него. " +
-                   "Если Вы считаете, что письмо пришло к вам по ошибке, просто удалите его.";
         }
 
         #endregion

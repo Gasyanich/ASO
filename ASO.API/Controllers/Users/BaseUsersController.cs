@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Threading.Tasks;
 using ASO.Models.DTO;
 using ASO.Models.DTO.Users;
@@ -8,16 +9,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace ASO.API.Controllers.Users
 {
     [ApiController]
-    public abstract class BaseUsersController : ControllerBase
+    public abstract class BaseUsersController : AsoBaseController
     {
         private readonly IUsersService _usersService;
+        private readonly IRegisterService _registerService;
 
-        protected BaseUsersController(IUsersService usersService)
+        protected BaseUsersController(IUsersService usersService, IRegisterService registerService)
         {
             _usersService = usersService;
+            _registerService = registerService;
         }
 
-        protected abstract string Role { get; }
+        protected abstract long RoleId { get; }
 
         [HttpPost]
         public virtual async Task<IActionResult> PostUserAsync(UserRegisterDto userRegisterDto)
@@ -25,9 +28,12 @@ namespace ASO.API.Controllers.Users
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _usersService.RegisterUserAsync(userRegisterDto, Role);
+            var result = await _registerService.RegisterUserAsync(userRegisterDto, RoleId);
 
-            return Ok(result);
+            if (result.IsSuccess)
+                return Ok(result.UserDto);
+
+            return BadResultRequest(result);
         }
 
         [HttpGet("{id}")]
@@ -44,7 +50,7 @@ namespace ASO.API.Controllers.Users
         [HttpGet]
         public virtual async Task<IActionResult> GetUsersByRoleAsync()
         {
-            var usersByRoles = await _usersService.GetUsersByRolesAsync(new []{Role});
+            var usersByRoles = await _usersService.GetUsersByRolesAsync(new []{"RoleId"});
 
             return Ok(usersByRoles);
         }

@@ -11,10 +11,11 @@ namespace ASO.API.Controllers.Users
     [Authorize(Roles = AuthorizeConstants.TeachersControllerRoles)]
     public class TeachersController : BaseUsersController
     {
-        public TeachersController(IUsersService usersService) : base(usersService)
+        public TeachersController(IUsersService usersService, IRegisterService registerService) : base(usersService,
+            registerService)
         {
         }
 
-        protected override string Role => RolesConstants.Teacher;
+        protected override long RoleId => RolesConstants.TeacherId;
     }
 }

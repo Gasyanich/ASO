@@ -16,6 +16,7 @@ namespace ASO.Services.Bootstrap
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUsersService, UsersService>();  
+            services.AddScoped<IRegisterService, RegisterService>();  
         }
 
         private static MailKitOptions MailOptions => new MailKitOptions

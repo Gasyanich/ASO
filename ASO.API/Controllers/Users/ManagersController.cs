@@ -11,10 +11,10 @@ namespace ASO.API.Controllers.Users
     [Authorize(Roles = AuthorizeConstants.ManagersControllerRoles)]
     public class ManagersController : BaseUsersController
     {
-        public ManagersController(IUsersService usersService) : base(usersService)
+        public ManagersController(IUsersService usersService, IRegisterService registerService) : base(usersService, registerService)
         {
         }
 
-        protected override string Role => RolesConstants.Manager;
+        protected override long RoleId => RolesConstants.ManagerId;
     }
 }

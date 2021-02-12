@@ -5,7 +5,6 @@ namespace ASO.API.Controllers
 {
     public abstract class AsoBaseController : ControllerBase
     {
-        protected IActionResult BadResultRequest(BaseResultDto resultDto) =>
-            BadRequest(new {Data = new {Error = resultDto.ErrorMessage}});
+        protected virtual IActionResult BadResultRequest(BaseResultDto resultDto) => BadRequest(new {Error = resultDto.ErrorMessage});
     }
 }
