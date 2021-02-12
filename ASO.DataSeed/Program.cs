@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using ASO.DataAccess;
 using ASO.DataAccess.Entities;
 using ASO.Models.Constants;
 using ASO.Services.Bootstrap;
@@ -30,18 +32,17 @@ namespace ASO.DataSeed
 
             var services = serviceCollection.BuildServiceProvider();
 
-
             var roleManager = services.GetService<RoleManager<UserRole>>();
+
             foreach (var userRole in Roles)
             {
                 await roleManager.CreateAsync(userRole);
             }
 
             var userManager = services.GetService<UserManager<User>>();
-
             await userManager.CreateAsync(Director, DefaultPassword);
-            await userManager.AddToRoleAsync(Director, RolesConstants.Director);
         }
+
 
         private static readonly List<UserRole> Roles = new()
         {
@@ -86,7 +87,9 @@ namespace ASO.DataSeed
             FirstName = "Игорь",
             LastName = "Игуменов",
             Patronymic = "Александрович",
-            PhoneNumber = "+79023217238"
+            PhoneNumber = "+79023217238",
+            Sex = Sex.Male,
+            RoleId = RolesConstants.DirectorId
         };
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace ASO.DataAccess.Entities
@@ -8,5 +9,7 @@ namespace ASO.DataAccess.Entities
         [Required]
         [MaxLength(100)]
         public string DisplayName { get; set; }
+
+        public List<User> Users { get; set; }
     }
 }

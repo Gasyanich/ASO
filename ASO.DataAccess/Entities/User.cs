@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace ASO.DataAccess.Entities
@@ -12,5 +13,8 @@ namespace ASO.DataAccess.Entities
         [Required] public Sex Sex { get; set; }
 
         [MaxLength(100)] public string Patronymic { get; set; }
+
+        public long RoleId { get; set; }
+        public UserRole Role { get; set; }
     }
 }
