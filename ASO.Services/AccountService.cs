@@ -3,7 +3,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using ASO.DataAccess;
 using ASO.DataAccess.Entities;
 using ASO.Models.DTO.Login;
 using ASO.Models.DTO.Users;
@@ -11,7 +10,6 @@ using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,7 +19,6 @@ namespace ASO.Services
     {
         private readonly ActionContext _actionContext;
         private readonly IConfiguration _configuration;
-        private readonly DataContext _dataContext;
         private readonly IRoleService _roleService;
         private readonly UserManager<User> _userManager;
         private readonly IUsersService _usersService;
@@ -29,14 +26,12 @@ namespace ASO.Services
 
         public AccountService(UserManager<User> userManager,
             IConfiguration configuration,
-            DataContext dataContext,
             IRoleService roleService,
             IActionContextAccessor actionContextAccessor,
             IUsersService usersService)
         {
             _userManager = userManager;
             _configuration = configuration;
-            _dataContext = dataContext;
             _roleService = roleService;
             _usersService = usersService;
             _actionContext = actionContextAccessor.ActionContext;
@@ -56,10 +51,10 @@ namespace ASO.Services
             if (!checkPassword)
                 return result;
 
-            var userRole = await _dataContext.UserRoles.FirstAsync(role => role.UserId == user.Id);
-            var userRoleName = _roleService.GetRoleById(userRole.RoleId).Name;
+            // чтоб не лезть в базу заберем роль из сервиса
+            var roleName = _roleService.GetRoleById(user.RoleId).Name;
 
-            var token = GenerateJwtToken(user, userRoleName);
+            var token = GenerateJwtToken(user, roleName);
 
             return result with {IsSuccess = true, Token = token};
         }
@@ -70,18 +65,6 @@ namespace ASO.Services
             var email = userClaims.FindFirst(ClaimTypes.Email)?.Value;
 
             return await _userManager.FindByEmailAsync(email);
-        }
-
-        public async Task<bool> ConfirmEmailAsync(long userId, string token)
-        {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-
-            if (user == null)
-                return false;
-
-            var result = await _userManager.ConfirmEmailAsync(user, token);
-
-            return result.Succeeded;
         }
 
         public async Task<UserDto> GetMeAsync()

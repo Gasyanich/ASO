@@ -12,7 +12,5 @@ namespace ASO.Services.Interfaces
         Task<UserDto> GetMeAsync();
 
         Task<User> GetCurrentUserAsync();
-
-        Task<bool> ConfirmEmailAsync(long userId, string token);
     }
 }

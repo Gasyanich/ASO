@@ -28,6 +28,9 @@ namespace ASO.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromForm] LoginReqDto reqDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var loginResult = await _accountService.LoginAsync(reqDto);
 
             if (!loginResult.IsSuccess)
@@ -35,14 +38,5 @@ namespace ASO.API.Controllers
 
             return Ok(loginResult.Token);
         }
-
-        // TODO: вернуть после разработки
-        //[HttpGet]
-        //public async Task<IActionResult> ConfirmEmail(long usid, string tkn)
-        //{
-        //    var result = await _accountService.ConfirmEmailAsync(usid, tkn);
-
-        //    return result ? Ok("Email подтвержден.") : BadRequest();
-        //}
     }
 }
