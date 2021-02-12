@@ -12,8 +12,4 @@
       <ProjectReference Include="..\ASO.DataAccess\ASO.DataAccess.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DTO\Results\" />
-    </ItemGroup>
-
 </Project>

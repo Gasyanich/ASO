@@ -1,50 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ASO.DataAccess;
 using ASO.DataAccess.Entities;
-using ASO.Models.DTO;
 using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
-using NETCore.MailKit.Core;
 
 namespace ASO.Services
 {
     public class UsersService : IUsersService
     {
-        private readonly ActionContext _actionContext;
         private readonly DataContext _dataContext;
-        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
-        private readonly RoleManager<UserRole> _roleManager;
         private readonly IRoleService _roleService;
-        private readonly IUrlHelper _urlHelper;
-        private readonly UserManager<User> _userManager;
 
         public UsersService(
             IMapper mapper,
-            IEmailService emailService,
-            UserManager<User> userManager,
-            IUrlHelperFactory urlHelperFactory,
-            IActionContextAccessor actionContextAccessor,
-            RoleManager<UserRole> roleManager,
             IRoleService roleService,
             DataContext dataContext)
         {
-            _actionContext = actionContextAccessor.ActionContext;
-
             _mapper = mapper;
-            _emailService = emailService;
-            _urlHelper = urlHelperFactory.GetUrlHelper(_actionContext);
-            _userManager = userManager;
-            _roleManager = roleManager;
             _roleService = roleService;
             _dataContext = dataContext;
         }
@@ -55,7 +32,7 @@ namespace ASO.Services
         {
             var user = await FindUserById(userId);
 
-            return await GetUserWithRole(user);
+            return GetUserWithRole(user);
         }
 
         public async Task<UserDto> UpdateUserAsync(long id, UserUpdateDto userDto)
@@ -68,40 +45,28 @@ namespace ASO.Services
             user.PhoneNumber = userDto.PhoneNumber;
             user.Sex = userDto.Sex;
 
-            var result = await _userManager.UpdateAsync(user);
+            _dataContext.Users.Update(user);
+            await _dataContext.SaveChangesAsync();
 
-            if (result.Succeeded)
-                return await GetUserWithRole(user);
-
-            return null;
+            return GetUserWithRole(user);
         }
 
         public async Task DeleteUserAsync(long id)
         {
             var userToDelete = await FindUserById(id);
 
-            await _userManager.DeleteAsync(userToDelete);
+            _dataContext.Remove(userToDelete);
+            await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserDto>> GetUsersByRolesAsync(IEnumerable<string> roleNames)
+        public async Task<IEnumerable<UserDto>> GetUsersByRoleIdsAsync(IEnumerable<long> roleIds)
         {
-            var usersWithRoleId = await
-                (from userRole in _dataContext.UserRoles
-                    join user in _dataContext.Users on userRole.UserId equals user.Id
-                    join roleName in _roleManager.Roles on userRole.RoleId equals roleName.Id
-                    where roleNames.Contains(roleName.Name)
-                    select new Tuple<User, long>(user, userRole.RoleId))
+            var users = await _dataContext.Users
+                .Include(user => user.Role)
+                .Where(user => roleIds.Contains(user.RoleId))
                 .ToListAsync();
 
-            return usersWithRoleId.Select(usersWithRoles =>
-            {
-                var (user, userRoleId) = usersWithRoles;
-
-                var userDto = _mapper.Map<UserDto>(user);
-                userDto.Role = _roleService.GetRoleById(userRoleId);
-
-                return userDto;
-            }).OrderBy(userDto => userDto.Role.DisplayName);
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
         public async Task<bool> UserExistAsync(long id)
@@ -113,20 +78,24 @@ namespace ASO.Services
 
         #region Private methods
 
-        private async Task<UserDto> GetUserWithRole(User user)
+        private UserDto GetUserWithRole(User user)
         {
-            var userRoles = await _userManager.GetRolesAsync(user);
-            var userRole = await _roleManager.FindByNameAsync(userRoles.First());
-
             var userDto = _mapper.Map<UserDto>(user);
-            userDto.Role = _mapper.Map<RoleDto>(userRole);
 
-            return userDto;
+            var role = _roleService.GetRoleById(user.RoleId);
+            userDto.Role = role;
+
+            return _mapper.Map<UserDto>(userDto);
         }
 
+        /// <summary>
+        ///     Ищет пользователя в базе/контексте
+        /// </summary>
+        /// <param name="id">Id пользователя</param>
+        /// <returns></returns>
         private async Task<User> FindUserById(long id)
         {
-            return await _userManager.FindByIdAsync(id.ToString());
+            return await _dataContext.Users.FindAsync(id);
         }
 
         #endregion

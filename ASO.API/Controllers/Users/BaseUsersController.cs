@@ -30,10 +30,7 @@ namespace ASO.API.Controllers.Users
 
             var result = await _registerService.RegisterUserAsync(userRegisterDto, RoleId);
 
-            if (result.IsSuccess)
-                return Ok(result.UserDto);
-
-            return BadResultRequest(result);
+            return result.IsSuccess ? Ok(result.UserDto) : BadResultRequest(result);
         }
 
         [HttpGet("{id}")]
@@ -50,7 +47,7 @@ namespace ASO.API.Controllers.Users
         [HttpGet]
         public virtual async Task<IActionResult> GetUsersByRoleAsync()
         {
-            var usersByRoles = await _usersService.GetUsersByRolesAsync(new []{"RoleId"});
+            var usersByRoles = await _usersService.GetUsersByRoleIdsAsync(new[] {RoleId});
 
             return Ok(usersByRoles);
         }
@@ -75,11 +72,6 @@ namespace ASO.API.Controllers.Users
             await _usersService.DeleteUserAsync(id);
 
             return NoContent();
-        }
-
-        private IActionResult BadRequestWrongId(long id)
-        {
-            return BadRequest($"User with id {id} not found");
         }
     }
 }

@@ -30,7 +30,7 @@ namespace ASO.API.Controllers.Users
             if (!isUserAccessRoles.IsSuccess)
                 return BadResultRequest(isUserAccessRoles);
 
-            var usersByRoles = await _usersService.GetUsersByRolesAsync(roles);
+            var usersByRoles = await _usersService.GetUsersByRoleIdsAsync(new List<long>());
 
             return Ok(usersByRoles);
         }
