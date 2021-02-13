@@ -1,13 +1,10 @@
 ﻿using System.Threading.Tasks;
-using ASO.DataAccess;
 using ASO.DataAccess.Entities;
 using ASO.Models.DTO.Results;
 using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using NETCore.MailKit.Core;
 
 namespace ASO.Services
 {
@@ -29,9 +26,7 @@ namespace ASO.Services
             var registerResult = new RegisterUserResult();
 
             if (await _userManager.FindByEmailAsync(registerDto.Email) != null)
-            {
                 return registerResult with {ErrorMessage = "Пользователь с таким именем уже существует"};
-            }
 
             var user = _mapper.Map<User>(registerDto with {RoleId = roleId});
             var password = "Simple123";

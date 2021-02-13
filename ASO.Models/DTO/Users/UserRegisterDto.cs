@@ -5,7 +5,7 @@ using ASO.DataAccess.Entities;
 namespace ASO.Models.DTO.Users
 {
     /// <summary>
-    /// DTO на запрос регистрации пользователя
+    ///     DTO на запрос регистрации пользователя
     /// </summary>
     public record UserRegisterDto
     {

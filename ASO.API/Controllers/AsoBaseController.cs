@@ -5,13 +5,19 @@ namespace ASO.API.Controllers
 {
     public abstract class AsoBaseController : ControllerBase
     {
-        protected virtual IActionResult BadResultRequest(BaseResultDto resultDto) =>
-            BadRequestError(resultDto.ErrorMessage);
+        protected virtual IActionResult BadResultRequest(BaseResultDto resultDto)
+        {
+            return BadRequestError(resultDto.ErrorMessage);
+        }
 
-        protected IActionResult BadRequestWrongId(long id, string entityName = "Пользователь") =>
-            BadRequestError($"{entityName} с id {id} не найден");
+        protected IActionResult BadRequestWrongId(long id, string entityName = "Пользователь")
+        {
+            return BadRequestError($"{entityName} с id {id} не найден");
+        }
 
-        protected IActionResult BadRequestError(string error) =>
-            BadRequest(new {Error = error});
+        protected IActionResult BadRequestError(string error)
+        {
+            return BadRequest(new {Error = error});
+        }
     }
 }

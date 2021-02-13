@@ -11,7 +11,8 @@ namespace ASO.API.Controllers.Users
     [Authorize(Roles = AuthorizeConstants.StudentsControllerRoles)]
     public class StudentsController : BaseUsersController
     {
-        public StudentsController(IUsersService usersService, IRegisterService registerService) : base(usersService, registerService)
+        public StudentsController(IUsersService usersService, IRegisterService registerService) : base(usersService,
+            registerService)
         {
         }
 

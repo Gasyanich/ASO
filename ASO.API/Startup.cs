@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using ASO.Services.Bootstrap;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +34,7 @@ namespace ASO.API
                     Scheme = "Bearer"
                 });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -47,7 +46,7 @@ namespace ASO.API
                             },
                             Scheme = "oauth2",
                             Name = "Bearer",
-                            In = ParameterLocation.Header,
+                            In = ParameterLocation.Header
                         },
                         new List<string>()
                     }

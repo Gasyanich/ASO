@@ -9,17 +9,7 @@ namespace ASO.Services.Bootstrap
 {
     public static class ServicesExtension
     {
-        public static void ConfigureServices(this IServiceCollection services)
-        {
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddSingleton<IEmailService, EmailService>(_ => new EmailService(new MailKitProvider(MailOptions)));
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IUsersService, UsersService>();  
-            services.AddScoped<IRegisterService, RegisterService>();  
-        }
-
-        private static MailKitOptions MailOptions => new MailKitOptions
+        private static MailKitOptions MailOptions => new()
         {
             Account = "driving-school.online@yandex.ru",
             Password = "ctvrvmpluteoamlw",
@@ -29,5 +19,15 @@ namespace ASO.Services.Bootstrap
             SenderEmail = "driving-school.online@yandex.ru",
             SenderName = "ASO Online"
         };
+
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddSingleton<IEmailService, EmailService>(_ => new EmailService(new MailKitProvider(MailOptions)));
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IRegisterService, RegisterService>();
+        }
     }
 }

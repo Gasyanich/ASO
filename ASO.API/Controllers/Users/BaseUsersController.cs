@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Threading.Tasks;
-using ASO.Models.DTO;
+﻿using System.Threading.Tasks;
 using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +8,8 @@ namespace ASO.API.Controllers.Users
     [ApiController]
     public abstract class BaseUsersController : AsoBaseController
     {
-        private readonly IUsersService _usersService;
         private readonly IRegisterService _registerService;
+        private readonly IUsersService _usersService;
 
         protected BaseUsersController(IUsersService usersService, IRegisterService registerService)
         {
@@ -55,6 +52,9 @@ namespace ASO.API.Controllers.Users
         [HttpPut]
         public virtual async Task<IActionResult> PutUserAsync(long id, UserUpdateDto userUpdateDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (!await _usersService.UserExistAsync(id))
                 return BadRequestWrongId(id);
 

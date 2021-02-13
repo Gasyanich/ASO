@@ -11,7 +11,8 @@ namespace ASO.API.Controllers.Users
     [Authorize(Roles = AuthorizeConstants.ManagersControllerRoles)]
     public class ManagersController : BaseUsersController
     {
-        public ManagersController(IUsersService usersService, IRegisterService registerService) : base(usersService, registerService)
+        public ManagersController(IUsersService usersService, IRegisterService registerService) : base(usersService,
+            registerService)
         {
         }
 
