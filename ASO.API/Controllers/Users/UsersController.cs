@@ -13,24 +13,31 @@ namespace ASO.API.Controllers.Users
     [Authorize(Roles = AuthorizeConstants.UsersControllerRoles)]
     public class UsersController : AsoBaseController
     {
-        private readonly IUsersService _usersService;
         private readonly IRoleService _roleService;
+        private readonly IUsersService _usersService;
 
         public UsersController(IUsersService usersService, IRoleService roleService)
         {
             _usersService = usersService;
             _roleService = roleService;
         }
-        
+
         [HttpGet]
-        public async Task<IActionResult> GetUsersByRoleAsync([FromQuery(Name = "roles")] List<string> roles)
+        public async Task<IActionResult> GetUsersByRoleAsync([FromQuery(Name = "roles")] string roles)
         {
-            var isUserAccessRoles = await _roleService.CheckUserCanAccessRoles(roles);
+            var rolesArray = roles.Split(',').Select(role => role.ToUpper()).ToArray();
+
+            if (!rolesArray.Any())
+                return BadRequestError("Не выбрано ни одной роли");
+
+            var isUserAccessRoles = await _roleService.CheckUserCanAccessRoles(rolesArray);
 
             if (!isUserAccessRoles.IsSuccess)
                 return BadResultRequest(isUserAccessRoles);
 
-            var usersByRoles = await _usersService.GetUsersByRoleIdsAsync(new List<long>());
+
+            var roleIds = rolesArray.Select(roleName => _roleService.GetRoleId(roleName));
+            var usersByRoles = await _usersService.GetUsersByRoleIdsAsync(roleIds);
 
             return Ok(usersByRoles);
         }

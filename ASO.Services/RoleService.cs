@@ -66,7 +66,7 @@ namespace ASO.Services
             _actionContext = actionContextAccessor.ActionContext;
         }
 
-        public async Task<BaseResultDto> CheckUserCanAccessRoles(List<string> roles)
+        public async Task<BaseResultDto> CheckUserCanAccessRoles(params string[] roles)
         {
             var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
             var currentUserRole = accessToken.GetIdentityRole();
@@ -90,22 +90,22 @@ namespace ASO.Services
 
             var result = new BaseResultDto(true);
 
-            var availableRolesNames = availableRolesIds
-                .Select(roleId => _roleToRoleId[roleId]).Select(role => role.Name)
+            var availableRoleNames = availableRolesIds
+                .Select(roleId => _roleToRoleId[roleId]).Select(role => role.Name.ToUpper())
                 .ToList();
 
-            if (!availableRolesNames.Any())
+            if (!availableRoleNames.Any())
                 return result with
                 {
                     IsSuccess = false, ErrorMessage = "Текущий пользователь не имеет доступа ни к одной роли"
                 };
 
-            var isUsersAccessToAllRoles = roles.All(role => availableRolesNames.Contains(role));
+            var isUsersAccessToAllRoles = roles.All(role => availableRoleNames.Contains(role));
 
             if (isUsersAccessToAllRoles)
                 return result;
 
-            var nonAccessRoles = roles.Except(availableRolesNames);
+            var nonAccessRoles = roles.Except(availableRoleNames);
 
             return result with
             {
@@ -118,6 +118,14 @@ namespace ASO.Services
         public RoleDto GetRoleById(long roleId)
         {
             return _roleToRoleId[roleId];
+        }
+
+        public long GetRoleId(string roleName)
+        {
+            var roleId = _roleToRoleId.Values
+                .FirstOrDefault(roleDto => roleDto.Name.Equals(roleName, StringComparison.OrdinalIgnoreCase))?.Id;
+
+            return roleId ?? 0;
         }
     }
 }
