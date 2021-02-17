@@ -14,5 +14,6 @@ namespace ASO.Services.Interfaces
         Task<User> GetCurrentUserAsync();
 
         Task<bool> ConfirmEmailAsync(long userId, string token);
+        Task<ChangePasswordResultDto> ChangePasswordAsync(string oldPassword, string newPassword, string repeatedNewPassword);
     }
 }

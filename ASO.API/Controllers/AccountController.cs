@@ -24,7 +24,15 @@ namespace ASO.API.Controllers
         {
             return Ok(await _accountService.GetMeAsync());
         }
-
+        [HttpPatch]
+        [Authorize(Roles = AuthorizeConstants.MeRoles)]
+        public async Task<IActionResult> ChangePasswordAsync([FromBody]string oldPassword,string newPassword,string RepeatedNewPassword)
+        {
+            var changePasswordResult = await _accountService.ChangePasswordAsync(oldPassword, newPassword, RepeatedNewPassword);
+            if (!changePasswordResult.IsSuccess)
+                return BadRequest(changePasswordResult.ErrorMessage);
+            return Ok();
+        }
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromForm] LoginReqDto reqDto)
         {

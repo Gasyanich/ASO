@@ -63,7 +63,20 @@ namespace ASO.Services
 
             return result with {IsSuccess = true, Token = token};
         }
-
+        public async Task<ChangePasswordResultDto> ChangePasswordAsync(string oldPassword,string newPassword,string repeatedNewPassword)
+        {
+            var user = await GetCurrentUserAsync();
+            var result = new ChangePasswordResultDto(false, "Авторизируйтесь, пожалуйста");
+            var checkPassword = await _userManager.CheckPasswordAsync(user, oldPassword);
+            if (!checkPassword)
+                return result;
+            if (newPassword != repeatedNewPassword)
+            {
+                return result with { ErrorMessage="Новые пароли не совпадают" };
+            }
+            await _userManager.ChangePasswordAsync(user,oldPassword,newPassword);
+            return result with { IsSuccess = true };
+        }
         public async Task<User> GetCurrentUserAsync()
         {
             var userClaims = _actionContext.HttpContext.User;
