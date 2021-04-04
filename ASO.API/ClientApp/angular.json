@@ -69,7 +69,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "aso-client:build"
+            "browserTarget": "aso-client:build",
+            "port": 4200
           },
           "configurations": {
             "production": {
