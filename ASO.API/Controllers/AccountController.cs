@@ -26,7 +26,7 @@ namespace ASO.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromForm] LoginReqDto reqDto)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginReqDto reqDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

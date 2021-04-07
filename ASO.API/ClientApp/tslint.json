@@ -12,7 +12,7 @@
     },
     "array-type": false,
     "arrow-return-shorthand": true,
-    "curly": true,
+    "curly": false,
     "deprecation": {
       "severity": "warning"
     },
@@ -139,13 +139,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "aso",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "aso",
       "kebab-case"
     ]
   }
