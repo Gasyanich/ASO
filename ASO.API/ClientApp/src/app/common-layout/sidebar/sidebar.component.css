@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 100%;
+}
+
+.aso-sidebar-login-panel {
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid slategrey;
+  text-align: center;
+}
+
+.aso-sidebar-navigation-menu-item {
+  width: 100%;
+  background-color: white;
+  margin: 0;
+  padding: 10px 3px;
+  cursor: pointer;
+  border: none;
+  text-align: start;
+}
+
+.aso-sidebar-navigation-menu-item:hover {
+  background-color: thistle;
+}
