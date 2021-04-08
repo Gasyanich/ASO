@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './core/material/material.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonLayoutModule } from './common-layout/common-layout.module';
+
 @NgModule({
   declarations: [
     AppComponent

@@ -1,8 +1,36 @@
-<div class="aso-sidebar-login-panel">
-  <span class="aso-sidebar-email">{{ email }}</span>
-  <span class="aso-sidebar-title-caption">{{ title }}</span>
-</div>
-<div class="aso-sidebar-navigation-menu" *ngFor="let item of menuItems">
-  <button class="aso-sidebar-navigation-menu-item">{{ item.name }}</button>
-</div>
+<mat-toolbar color="primary" class="example-toolbar">
+  <button mat-icon-button (click)="sidenav.toggle()" *ngIf="isLoggedIn">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1 class="aso-sidebar-name">ASO</h1>
+</mat-toolbar>
+
+
+<mat-sidenav-container class="aso-sidenav-container">
+  <mat-sidenav #sidenav mode="side" [opened]="isLoggedIn">
+    <mat-nav-list class="aso-sidebar-list">
+
+      <div class="aso-sidebar-login-panel">
+        <span class="aso-sidebar-email">{{ email }}</span>
+        <span class="aso-sidebar-title-caption">{{ title }}</span>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="aso-sidebar-navigation-menu" *ngFor="let item of menuItems">
+        <button routerLink="{{item.path}}" mat-list-item class="aso-sidebar-navigation-menu-item">
+          {{ item.name }}
+        </button>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+
+
 
