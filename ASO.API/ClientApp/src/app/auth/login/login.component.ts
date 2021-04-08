@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {UserLogin} from '../user-login.model';
 import {UserLoginResult} from '../user-login-result.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'aso-login',
@@ -13,20 +14,20 @@ export class LoginComponent implements OnInit {
   public userLogin: UserLogin;
   public userLoginResult: UserLoginResult | undefined;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.userLogin = new UserLogin();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
-  login(): void {
+  public login(): void {
     this.authService.login(this.userLogin).subscribe(
       (loginResult: UserLoginResult) => {
+        this.userLoginResult = loginResult;
+
         if (loginResult.isSuccess) {
-          console.log('Логин успешный сучка');
-        } else {
-          this.userLoginResult = loginResult;
+          this.router.navigateByUrl(this.authService.redirectUrl);
         }
       });
   }

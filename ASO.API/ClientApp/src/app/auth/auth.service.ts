@@ -12,10 +12,12 @@ import {UserLoginResult} from './user-login-result.model';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) {
+  public redirectUrl = '';
+
+  constructor(private http: HttpClient, private router: Router) {
   }
 
-  login(userLogin: UserLogin): Observable<UserLoginResult> {
+  public login(userLogin: UserLogin): Observable<UserLoginResult> {
     return this.http.post<string>(
       'https://localhost:5001/api/login',
       userLogin,
@@ -26,8 +28,9 @@ export class AuthService {
         return new UserLoginResult(true, '');
       }),
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 401)
+        if (err.status === 401) {
           return of(new UserLoginResult(false, err.error));
+        }
 
         // если вернулось не 401 при ошибке, то с серваком что-то не то
         return of(new UserLoginResult(false, 'Ошибка сервера. Повторите попытку позже'));
@@ -35,11 +38,13 @@ export class AuthService {
     );
   }
 
-  logout(): void {
+  public logout(): void {
+    // TODO: посылать запрос на бэкенд после того, как доделаем logout
     localStorage.removeItem('token');
+    this.router.navigateByUrl('/login');
   }
 
-  isLoggedIn(): boolean {
+  public isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !!token;
   }
