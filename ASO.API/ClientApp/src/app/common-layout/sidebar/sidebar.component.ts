@@ -6,7 +6,7 @@ import {AuthService} from '../../auth/auth.service';
 @Component({
   selector: 'aso-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
   // Получить по http с помощью какого-нибудь сервиса.
@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
       new SidebarItem('Регистрация пользователя', '/register')
     ];
 
-    this.isLoggedIn = this.authService.isLoggedIn();
+    this.isLoggedIn = true; //this.authService.isLoggedIn();
     console.log(this.isLoggedIn);
   }
 
