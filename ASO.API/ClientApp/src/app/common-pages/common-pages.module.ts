@@ -6,15 +6,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MaterialModule } from '../core/material/material.module';
 import { AuthModule } from '../auth/auth.module';
-import { HomePageComponent } from './home-page/home-page.component';
+import { ProfileComponent } from './profile/profile-page/profile.component';
+import {AuthGuard} from '../auth/guards/auth.guard';
 
 const routes: Routes = [
-  {path: 'home', component: HomePageComponent}
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
   declarations: [
-    HomePageComponent
+    ProfileComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +26,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
   ],
   exports: [
-    HomePageComponent,
+    ProfileComponent,
     RouterModule
   ]
 })
