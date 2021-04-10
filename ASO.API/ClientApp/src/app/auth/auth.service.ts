@@ -19,7 +19,7 @@ export class AuthService {
 
   public login(userLogin: UserLogin): Observable<UserLoginResult> {
     return this.http.post<string>(
-      'https://localhost:5001/api/login',
+      '/login',
       userLogin,
       {observe: 'response', responseType: 'text' as 'json'},
     ).pipe(
