@@ -1,3 +1,5 @@
+@import "../../../palette";
+
 :host {
   display: flex;
   flex-direction: column;
@@ -26,11 +28,6 @@
   text-align: start;
 }
 
-.aso-sidebar-navigation-menu-item:hover {
-  background-color: thistle;
-}
-
-
 .aso-sidenav-container {
   flex: 1;
 }
@@ -41,4 +38,10 @@ h1.aso-sidebar-name {
 
 .aso-sidebar-list{
   width: 300px;
+}
+
+.aso-sidebar-navigation-menu-item-active,
+.aso-sidebar-navigation-menu-item:focus,
+.aso-sidebar-navigation-menu-item:hover {
+  background-color: $aso-accent;
 }

@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
       new SidebarItem('Регистрация пользователя', '/register')
     ];
 
-    this.isLoggedIn = true; //this.authService.isLoggedIn();
+    this.isLoggedIn = true;// this.authService.isLoggedIn();
     console.log(this.isLoggedIn);
   }
 
