@@ -1,9 +1,11 @@
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {CommonModule} from '@angular/common';
 
-import { MaterialModule } from '../core/material/material.module';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import {MaterialModule} from '../core/material/material.module';
+import {SidebarComponent} from './sidebar/sidebar.component';
+import {AuthModule} from '../auth/auth.module';
+
 
 @NgModule({
   declarations: [
@@ -12,10 +14,12 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   imports: [
     CommonModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    AuthModule
   ],
   exports: [
     SidebarComponent
   ]
 })
-export class CommonLayoutModule { }
+export class CommonLayoutModule {
+}

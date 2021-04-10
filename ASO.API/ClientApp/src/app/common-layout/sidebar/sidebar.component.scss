@@ -1,8 +1,13 @@
+@import "../../../palette";
+
 :host {
   display: flex;
   flex-direction: column;
-  width: 200px;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .aso-sidebar-login-panel {
@@ -10,7 +15,6 @@
   flex-direction: column;
   margin: 8px;
   padding-bottom: 10px;
-  border-bottom: 1px solid slategrey;
   text-align: center;
 }
 
@@ -24,6 +28,20 @@
   text-align: start;
 }
 
+.aso-sidenav-container {
+  flex: 1;
+}
+
+h1.aso-sidebar-name {
+  margin-left: 8px;
+}
+
+.aso-sidebar-list{
+  width: 300px;
+}
+
+.aso-sidebar-navigation-menu-item-active,
+.aso-sidebar-navigation-menu-item:focus,
 .aso-sidebar-navigation-menu-item:hover {
-  background-color: thistle;
+  background-color: $aso-accent;
 }

@@ -1,27 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { SidebarItem } from './sidebar-item';
+import {SidebarItem} from './sidebar-item';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'aso-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
   // Получить по http с помощью какого-нибудь сервиса.
-  public email: string = 'example@example.com';
-  public title: string = 'Работяга';
+  public email = 'example@example.com';
+  public title = 'Работяга';
   public menuItems: SidebarItem[] = [];
 
-  constructor() {
+  public isLoggedIn: boolean;
+
+  constructor(private authService: AuthService) {
     this.menuItems = [
-      new SidebarItem('Главная'),
-      new SidebarItem('Профиль'),
-      new SidebarItem('Не главная'),
-      new SidebarItem('Чятик'),
-      new SidebarItem('Регистрация пользователя')
+      new SidebarItem('Главная', '/home'),
+      new SidebarItem('Профиль', '/profile'),
+      new SidebarItem('Не главная', '/nothome'),
+      new SidebarItem('Чятик', '/chyat'),
+      new SidebarItem('Регистрация пользователя', '/register')
     ];
-   }
+
+    this.isLoggedIn = true;// this.authService.isLoggedIn();
+    console.log(this.isLoggedIn);
+  }
 
   ngOnInit(): void {
   }

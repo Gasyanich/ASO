@@ -1,0 +1,39 @@
+<h1 class="aso-home-page-title">Autoschool</h1>
+<mat-card class="aso-home-page-card">
+  <div class="aso-home-page-user">
+    <div class="aso-home-page-pic">
+      <fa-icon [icon]="userIcon" size="2x" [fixedWidth]="true"></fa-icon>
+    </div>
+    <span class="aso-home-page-user-name">Игорь</span>
+    <span class="aso-home-page-user-title">Директор</span>
+  </div>
+
+  <span class="aso-home-page-user-details">Подробная информация</span>
+  <mat-list>
+    <mat-divider></mat-divider>
+    <mat-list-item class="aso-home-page-list-item">
+      <fa-icon [icon]="userIcon"></fa-icon>
+      <div class="aso-home-page-list-text-container">
+        <span>{{ userData.gender }}</span>
+        <span class="aso-home-page-list-caption">Пол</span>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item class="aso-home-page-list-item">
+      <fa-icon [icon]="atIcon"></fa-icon>
+      <div class="aso-home-page-list-text-container">
+        <span>{{ userData.email }}</span>
+        <span class="aso-home-page-list-caption">Почта</span>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item class="aso-home-page-list-item">
+      <fa-icon [icon]="phoneIcon"></fa-icon>
+      <div class="aso-home-page-list-text-container">
+        <span> {{ userData.phone }}</span>
+        <span class="aso-home-page-list-caption">Телефон</span>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+</mat-card>
