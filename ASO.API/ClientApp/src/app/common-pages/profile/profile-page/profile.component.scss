@@ -7,20 +7,8 @@
   width: 100%;
 }
 
-.aso-home-page-title,
-.aso-home-page-card {
-  margin: 20px;
-  margin-bottom: 0px;
-}
-
-.aso-home-page-card {
-  display: flex;
-  flex-direction: column;
-  height: 50%;
-}
-
 /* user section */
-.aso-home-page-user {
+.aso-profile-user {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,7 +16,7 @@
   margin-bottom: auto;
 }
 
-.aso-home-page-pic {
+.aso-profile-pic {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,29 +31,30 @@
   }
 }
 
-.aso-home-page-user-name {
+.aso-profile-user-name {
   font-size: 1.2rem;
   font-weight: bold;
 }
 
-.aso-home-page-user-title {
+.aso-profile-user-title {
   color: $aso-caption
 }
 
-.aso-home-page-pic,
-.aso-home-page-user-name,
-.aso-home-page-user-title {
+.aso-profile-pic,
+.aso-profile-user-name,
+.aso-profile-user-title {
   margin-bottom: 10px;
 }
 
 /* list section */
-.aso-home-page-user-details {
+.aso-profile-user-details {
   font-weight: bold;
 }
 
-.aso-home-page-list-item {
+.aso-profile-list-item {
   display: flex;
   flex-direction: row;
+  height: 64px;
 
   & fa-icon {
     color: $aso-main-color;
@@ -73,12 +62,12 @@
   }
 }
 
-.aso-home-page-list-text-container {
+.aso-profile-list-text-container {
   display: flex;
   flex-direction: column;
 }
 
-.aso-home-page-list-caption {
+.aso-profile-list-caption {
   color: $aso-caption;
   font-size: 0.8rem;
 }

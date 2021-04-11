@@ -1,0 +1,51 @@
+<aso-page-title>Регистрация пользователя</aso-page-title>
+<aso-content-card class="aso-registration-content">
+  <mat-horizontal-stepper [linear]="false">
+    <mat-step>
+      <ng-template matStepLabel>Тип пользователя</ng-template>
+        <div class="aso-registration-user-type-step">
+          <form class="aso-registration-user-type-form">
+          <mat-radio-group class="aso-registration-user-type-group">
+            <mat-radio-button class="aso-registration-user-type-radio" value="manager">Менеджер</mat-radio-button>
+            <mat-radio-button class="aso-registration-user-type-radio" value="teacher">Преподаватель</mat-radio-button>
+            <mat-radio-button class="aso-registration-user-type-radio" value="student">Ученик</mat-radio-button>
+          </mat-radio-group>
+          </form>
+        </div>
+    </mat-step>
+    <mat-step>
+      <div class="aso-registration-personal-data-step">
+        <ng-template matStepLabel>Данные</ng-template>
+        <form class="aso-registration-personal-data-form">
+          <mat-form-field>
+            <mat-label>Фамилия</mat-label>
+            <input matInput placeholder="Фамилия">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Имя</mat-label>
+            <input matInput placeholder="Имя">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Отчество</mat-label>
+            <input matInput placeholder="Отчество">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input type="email" matInput placeholder="Email">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Телефон</mat-label>
+            <input matInput placeholder="Телефон">
+          </mat-form-field>
+        </form>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Готово</ng-template>
+      <div class="aso-registration-final-step">
+        <button class="aso-registration-create-button" mat-raised-button color="primary">Создать</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+</aso-content-card>

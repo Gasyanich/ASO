@@ -5,11 +5,13 @@ import {CommonModule} from '@angular/common';
 import {MaterialModule} from '../core/material/material.module';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {AuthModule} from '../auth/auth.module';
+import { ContentCardComponent } from './content-card/content-card.component';
 
 
 @NgModule({
   declarations: [
-    SidebarComponent
+    SidebarComponent,
+    ContentCardComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import {AuthModule} from '../auth/auth.module';
     AuthModule
   ],
   exports: [
-    SidebarComponent
+    SidebarComponent,
+    ContentCardComponent
   ]
 })
 export class CommonLayoutModule {
