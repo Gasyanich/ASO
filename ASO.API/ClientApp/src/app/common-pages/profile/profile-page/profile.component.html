@@ -1,39 +1,39 @@
-<h1 class="aso-home-page-title">Autoschool</h1>
-<mat-card class="aso-home-page-card">
-  <div class="aso-home-page-user">
-    <div class="aso-home-page-pic">
+<aso-page-title text="Профиль"></aso-page-title>
+<aso-content-card>
+  <div class="aso-profile-user">
+    <div class="aso-profile-pic">
       <fa-icon [icon]="userIcon" size="2x" [fixedWidth]="true"></fa-icon>
     </div>
-    <span class="aso-home-page-user-name">Игорь</span>
-    <span class="aso-home-page-user-title">Директор</span>
+    <span class="aso-profile-user-name">Игорь</span>
+    <span class="aso-profile-user-title">Директор</span>
   </div>
 
-  <span class="aso-home-page-user-details">Подробная информация</span>
+  <span class="aso-profile-user-details">Подробная информация</span>
   <mat-list>
     <mat-divider></mat-divider>
-    <mat-list-item class="aso-home-page-list-item">
+    <mat-list-item class="aso-profile-list-item">
       <fa-icon [icon]="userIcon"></fa-icon>
-      <div class="aso-home-page-list-text-container">
+      <div class="aso-profile-list-text-container">
         <span>{{ userData.gender }}</span>
-        <span class="aso-home-page-list-caption">Пол</span>
+        <span class="aso-profile-list-caption">Пол</span>
       </div>
     </mat-list-item>
     <mat-divider></mat-divider>
-    <mat-list-item class="aso-home-page-list-item">
+    <mat-list-item class="aso-profile-list-item">
       <fa-icon [icon]="atIcon"></fa-icon>
-      <div class="aso-home-page-list-text-container">
+      <div class="aso-profile-list-text-container">
         <span>{{ userData.email }}</span>
-        <span class="aso-home-page-list-caption">Почта</span>
+        <span class="aso-profile-list-caption">Почта</span>
       </div>
     </mat-list-item>
     <mat-divider></mat-divider>
-    <mat-list-item class="aso-home-page-list-item">
+    <mat-list-item class="aso-profile-list-item">
       <fa-icon [icon]="phoneIcon"></fa-icon>
-      <div class="aso-home-page-list-text-container">
+      <div class="aso-profile-list-text-container">
         <span> {{ userData.phone }}</span>
-        <span class="aso-home-page-list-caption">Телефон</span>
+        <span class="aso-profile-list-caption">Телефон</span>
       </div>
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>
-</mat-card>
+</aso-content-card>

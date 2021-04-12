@@ -7,15 +7,21 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MaterialModule } from '../core/material/material.module';
 import { AuthModule } from '../auth/auth.module';
 import { ProfileComponent } from './profile/profile-page/profile.component';
-import {AuthGuard} from '../auth/guards/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RegistrationComponent } from './registration/registration.component';
+import { CommonLayoutModule } from '../common-layout/common-layout.module';
+import { PageTitleComponent } from './page-title/page-title.component';
 
 const routes: Routes = [
-  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]}
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  {path: 'register', component: RegistrationComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
   declarations: [
-    ProfileComponent
+    ProfileComponent,
+    RegistrationComponent,
+    PageTitleComponent
   ],
   imports: [
     CommonModule,
@@ -23,6 +29,7 @@ const routes: Routes = [
     FontAwesomeModule,
     HttpClientModule,
     AuthModule,
+    CommonLayoutModule,
     RouterModule.forRoot(routes),
   ],
   exports: [

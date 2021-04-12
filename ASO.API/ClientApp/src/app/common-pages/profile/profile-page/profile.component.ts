@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faUser, faAt, faPhone } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'aso-home-page',
+  selector: 'aso-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
