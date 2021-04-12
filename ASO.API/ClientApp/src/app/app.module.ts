@@ -11,6 +11,7 @@ import {CommonLayoutModule} from './common-layout/common-layout.module';
 import {CommonPagesModule} from './common-pages/common-pages.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ApiInterceptor} from './core/api/api-http-interceptor';
+import {AuthInterceptor} from './auth/auth-http-intercetpor';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,11 @@ import {ApiInterceptor} from './core/api/api-http-interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true
     }
   ],
