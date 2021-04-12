@@ -41,7 +41,17 @@ h1.aso-sidebar-name {
 }
 
 .aso-sidebar-navigation-menu-item-active,
-.aso-sidebar-navigation-menu-item:focus,
 .aso-sidebar-navigation-menu-item:hover {
   background-color: $aso-accent;
+}
+
+.aso-sidebar-navigation-menu-item:focus {
+  background-color: inherit;
+}
+
+.aso-sidebar-item-icon {
+  text-align: center;
+  color: $aso-main-color;
+  width: 24px;
+  margin-right: 4px;
 }

@@ -19,6 +19,7 @@
 
       <div class="aso-sidebar-navigation-menu" *ngFor="let item of menuItems">
         <button routerLink="{{item.path}}" routerLinkActive="aso-sidebar-navigation-menu-item-active" mat-list-item class="aso-sidebar-navigation-menu-item">
+          <fa-icon class="aso-sidebar-item-icon" *ngIf="item.icon != null" [icon]="item.icon"></fa-icon>
           {{ item.name }}
         </button>
       </div>
