@@ -1,11 +1,12 @@
-import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 import {MaterialModule} from '../core/material/material.module';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {AuthModule} from '../auth/auth.module';
 import { ContentCardComponent } from './content-card/content-card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { ContentCardComponent } from './content-card/content-card.component';
     CommonModule,
     MaterialModule,
     HttpClientModule,
+    FontAwesomeModule,
     AuthModule
   ],
   exports: [
