@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { faUser, faAt, faPhone } from '@fortawesome/free-solid-svg-icons';
+import {Component, OnInit} from '@angular/core';
+import {faUser, faAt, faPhone} from '@fortawesome/free-solid-svg-icons';
+import {ProfileService} from '../profile.service';
+import {User} from '../../../core/models/users/user.model';
 
 @Component({
   selector: 'aso-profile',
@@ -11,19 +13,18 @@ export class ProfileComponent implements OnInit {
   public atIcon = faAt;
   public phoneIcon = faPhone;
 
-  public userData: {
-    gender: string,
-    email: string,
-    phone: string
-  } = {
-    gender: 'Мужской',
-    email: 'example@example.com',
-    phone: '88005553535 проще позвонить, чем у кого-то занимать'
-  };
+  public user: User | undefined;
 
-  constructor() { }
+  public getUserFio(): string {
+    return `${this.user?.lastName} ${this.user?.firstName} ${this.user?.patronymic}`;
+  }
+
+  constructor(private profileService: ProfileService) {
+  }
 
   ngOnInit(): void {
+    this.profileService.getCurrentUser()
+      .subscribe(user => this.user = user);
   }
 
 }
