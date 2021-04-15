@@ -2,7 +2,7 @@
 <aso-content-card>
   <div class="aso-profile-user">
     <div class="aso-profile-pic">
-      <fa-icon [icon]="userIcon" size="2x" [fixedWidth]="true"></fa-icon>
+      <aso-avatar-photo [name]="user.firstName + ' ' + user.lastName"></aso-avatar-photo>
     </div>
     <span class="aso-profile-user-name">{{getUserFio()}}</span>
     <span class="aso-profile-user-title">{{user.role.displayName}}</span>

@@ -11,6 +11,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { RegistrationComponent } from './registration/registration.component';
 import { CommonLayoutModule } from '../common-layout/common-layout.module';
 import { PageTitleComponent } from './page-title/page-title.component';
+import { AvatarPhotoComponent } from './profile/avatar-photo/avatar-photo.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
@@ -21,7 +22,8 @@ const routes: Routes = [
   declarations: [
     ProfileComponent,
     RegistrationComponent,
-    PageTitleComponent
+    PageTitleComponent,
+    AvatarPhotoComponent
   ],
   imports: [
     CommonModule,
