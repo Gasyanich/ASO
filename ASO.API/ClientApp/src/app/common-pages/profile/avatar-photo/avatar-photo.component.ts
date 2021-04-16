@@ -10,8 +10,8 @@ export class AvatarPhotoComponent implements OnInit {
   @Input() public photoUrl: string;
   @Input() public name: string;
 
+  public initials = '';
   public showInitials = false;
-  public initials: string;
 
   ngOnInit(): void {
     if (!this.photoUrl) {
@@ -20,7 +20,6 @@ export class AvatarPhotoComponent implements OnInit {
     }
   }
 
-  // я не смотрел, как это работает, но вроде работает
   private createInitials(): void {
     let initials = '';
 
