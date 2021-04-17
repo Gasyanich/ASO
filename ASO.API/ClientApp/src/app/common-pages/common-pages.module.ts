@@ -8,20 +8,21 @@ import { MaterialModule } from '../core/material/material.module';
 import { AuthModule } from '../auth/auth.module';
 import { ProfileComponent } from './profile/profile-page/profile.component';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { RegistrationComponent } from './registration/registration.component';
+import { RegistrationPageComponent } from './registration/registration-page/registration-page.component';
 import { CommonLayoutModule } from '../common-layout/common-layout.module';
 import { PageTitleComponent } from './page-title/page-title.component';
 import { AvatarPhotoComponent } from './profile/avatar-photo/avatar-photo.component';
+import {FormsModule} from '@angular/forms';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  {path: 'register', component: RegistrationComponent, canActivate: [AuthGuard]}
+  {path: 'register', component: RegistrationPageComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
   declarations: [
     ProfileComponent,
-    RegistrationComponent,
+    RegistrationPageComponent,
     PageTitleComponent,
     AvatarPhotoComponent
   ],
@@ -33,6 +34,7 @@ const routes: Routes = [
     AuthModule,
     CommonLayoutModule,
     RouterModule.forRoot(routes),
+    FormsModule,
   ],
   exports: [
     ProfileComponent,
