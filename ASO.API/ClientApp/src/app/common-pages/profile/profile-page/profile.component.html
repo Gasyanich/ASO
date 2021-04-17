@@ -2,10 +2,10 @@
 <aso-content-card>
   <div class="aso-profile-user">
     <div class="aso-profile-pic">
-      <fa-icon [icon]="userIcon" size="2x" [fixedWidth]="true"></fa-icon>
+      <aso-avatar-photo [name]="user.firstName + ' ' + user.lastName"></aso-avatar-photo>
     </div>
-    <span class="aso-profile-user-name">Игорь</span>
-    <span class="aso-profile-user-title">Директор</span>
+    <span class="aso-profile-user-name">{{getUserFio()}}</span>
+    <span class="aso-profile-user-title">{{user.role.displayName}}</span>
   </div>
 
   <span class="aso-profile-user-details">Подробная информация</span>
@@ -14,7 +14,7 @@
     <mat-list-item class="aso-profile-list-item">
       <fa-icon [icon]="userIcon"></fa-icon>
       <div class="aso-profile-list-text-container">
-        <span>{{ userData.gender }}</span>
+        <span>{{ user.sexName }}</span>
         <span class="aso-profile-list-caption">Пол</span>
       </div>
     </mat-list-item>
@@ -22,7 +22,7 @@
     <mat-list-item class="aso-profile-list-item">
       <fa-icon [icon]="atIcon"></fa-icon>
       <div class="aso-profile-list-text-container">
-        <span>{{ userData.email }}</span>
+        <span>{{ user.email }}</span>
         <span class="aso-profile-list-caption">Почта</span>
       </div>
     </mat-list-item>
@@ -30,7 +30,7 @@
     <mat-list-item class="aso-profile-list-item">
       <fa-icon [icon]="phoneIcon"></fa-icon>
       <div class="aso-profile-list-text-container">
-        <span> {{ userData.phone }}</span>
+        <span> {{ user.phoneNumber }}</span>
         <span class="aso-profile-list-caption">Телефон</span>
       </div>
     </mat-list-item>
