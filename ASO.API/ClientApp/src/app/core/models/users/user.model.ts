@@ -1,4 +1,4 @@
-import {Role} from './role.model';
+import { Role } from './role.model';
 
 export class User {
   id: number;
@@ -8,6 +8,11 @@ export class User {
   email: string;
   phoneNumber: string;
   role: Role;
-  sex: 0 | 1;
+  sex: Sex;
   sexName: string;
+}
+
+export enum Sex {
+  Male = 0,
+  Female = 1
 }

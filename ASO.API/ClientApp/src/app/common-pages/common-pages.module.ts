@@ -13,10 +13,12 @@ import { CommonLayoutModule } from '../common-layout/common-layout.module';
 import { PageTitleComponent } from './page-title/page-title.component';
 import { AvatarPhotoComponent } from './profile/avatar-photo/avatar-photo.component';
 import {FormsModule} from '@angular/forms';
+import { UserTableComponent } from './user-table/user-table.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'register', component: RegistrationPageComponent, canActivate: [AuthGuard]}
+  {path: 'nothome', component: UserTableComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
@@ -24,7 +26,8 @@ const routes: Routes = [
     ProfileComponent,
     RegistrationPageComponent,
     PageTitleComponent,
-    AvatarPhotoComponent
+    AvatarPhotoComponent,
+    UserTableComponent
   ],
   imports: [
     CommonModule,

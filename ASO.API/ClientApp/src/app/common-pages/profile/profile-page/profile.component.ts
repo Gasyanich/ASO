@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {faUser, faAt, faPhone} from '@fortawesome/free-solid-svg-icons';
 import {ProfileService} from '../profile.service';
-import {User} from '../../../core/models/users/user.model';
+import {Sex, User} from '../../../core/models/users/user.model';
 
 @Component({
   selector: 'aso-profile',
@@ -17,6 +17,10 @@ export class ProfileComponent implements OnInit {
 
   public getUserFio(): string {
     return `${this.user?.lastName} ${this.user?.firstName} ${this.user?.patronymic}`;
+  }
+
+  public getUserSex(): string {
+    return this.user?.sex === Sex.Male ? 'Мужской' : 'Женский';
   }
 
   constructor(private profileService: ProfileService) {
