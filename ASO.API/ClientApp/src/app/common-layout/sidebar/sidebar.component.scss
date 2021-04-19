@@ -41,12 +41,9 @@ h1.aso-sidebar-name {
 }
 
 .aso-sidebar-navigation-menu-item-active,
-.aso-sidebar-navigation-menu-item:hover {
-  background-color: $aso-accent;
-}
-
+.aso-sidebar-navigation-menu-item:hover,
 .aso-sidebar-navigation-menu-item:focus {
-  background-color: inherit;
+  background-color: $aso-accent;
 }
 
 .aso-sidebar-item-icon {

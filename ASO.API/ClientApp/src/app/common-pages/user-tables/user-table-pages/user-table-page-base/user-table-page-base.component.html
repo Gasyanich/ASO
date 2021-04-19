@@ -1,0 +1,21 @@
+<aso-page-title [text]="pageTitle"></aso-page-title>
+
+<aso-content-card>
+  <mat-form-field appearance="outline">
+    <mat-label>Поиск</mat-label>
+    <input matInput [(ngModel)]="searchText">
+    <mat-icon matSuffix *ngIf="searchText?.length === 0">search</mat-icon>
+    <button mat-button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="searchText=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <aso-user-table [searchText]="searchText"
+                  [isRoleColumnShown]="isShowRoleColumn"
+                  [users]="users"
+                  *ngIf="!isLoading">
+  </aso-user-table>
+
+</aso-content-card>
+
+<mat-spinner class="spinner" *ngIf="isLoading"></mat-spinner>

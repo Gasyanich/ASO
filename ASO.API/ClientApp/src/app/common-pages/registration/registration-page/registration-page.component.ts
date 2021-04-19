@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {RegistrationService} from '../registration.service';
-import {User} from '../../../core/models/users/user.model';
+
 import {ProfileService} from '../../profile/profile.service';
 import {Role} from '../../../core/models/users/role.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {User} from '../../../core/models/users/user.model';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'aso-registration',
@@ -33,13 +35,17 @@ export class RegistrationPageComponent implements OnInit {
     this.user.sex = 0;
   }
 
-  public registerUser(): void {
+  public registerUser(form: NgForm): void {
     console.log(this.user);
 
     this.registrationService.registerUser(this.user)
       .subscribe(
-        () => this.snackBar.open('Пользователь успешно зарегестрирован', null, {horizontalPosition: 'end'}),
-        () => this.snackBar.open('Возникла ошибка во время регистрации пользователя', null, {horizontalPosition: 'end'})
+        () => {
+          this.snackBar.open('Пользователь успешно зарегестрирован', null, {horizontalPosition: 'end', duration: 2000});
+          this.user = new User();
+          form.resetForm(this.user);
+        },
+        () => this.snackBar.open('Возникла ошибка во время регистрации пользователя', null, {horizontalPosition: 'end', duration: 2000})
       );
   }
 }

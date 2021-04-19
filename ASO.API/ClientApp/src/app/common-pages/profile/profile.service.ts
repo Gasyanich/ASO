@@ -22,15 +22,7 @@ export class ProfileService {
     return this.http.get<User>('/me')
       .pipe(
         map((user: User) => {
-          switch (user.sex) {
-            case 0:
-              user.sexName = 'Мужской';
-              break;
-            case 1:
-              user.sexName = 'Женский';
-              break;
-          }
-
+          this.user = user;
           return user;
         })
       );
