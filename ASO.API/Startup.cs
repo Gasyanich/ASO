@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ASO.Services.Bootstrap;
 using Microsoft.AspNetCore.Builder;
@@ -99,6 +100,7 @@ namespace ASO.API
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
+                spa.Options.StartupTimeout = TimeSpan.FromMinutes(5);
 
                 if (env.IsDevelopment())
                 {
