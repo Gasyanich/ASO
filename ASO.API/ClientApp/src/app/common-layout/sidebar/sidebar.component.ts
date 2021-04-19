@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { SidebarItem } from './sidebar-item';
-import { AuthService } from '../../auth/auth.service';
-import { faHome, faUser, faMailBulk, faPlus, faWheelchair } from '@fortawesome/free-solid-svg-icons';
-import { ProfileService } from 'src/app/common-pages/profile/profile.service';
+import {SidebarItem} from './sidebar-item';
+import {AuthService} from '../../auth/auth.service';
+import {faHome, faUser, faMailBulk, faPlus, faUserGraduate, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {ProfileService} from 'src/app/common-pages/profile/profile.service';
+
 @Component({
   selector: 'aso-sidebar',
   templateUrl: './sidebar.component.html',
@@ -12,11 +13,11 @@ import { ProfileService } from 'src/app/common-pages/profile/profile.service';
 export class SidebarComponent implements OnInit {
   public homeIcon = faHome;
   public profileIcon = faUser;
-  public notHomeIcon = faWheelchair;
   public chatIcon = faMailBulk;
   public regIcon = faPlus;
+  public studentIcon = faUserGraduate;
+  public employeeIcon = faUsers;
 
-  // Получить по http с помощью какого-нибудь сервиса.
   public email = '...';
   public title = '...';
   public menuItems: SidebarItem[] = [];
@@ -29,9 +30,10 @@ export class SidebarComponent implements OnInit {
     this.menuItems = [
       new SidebarItem('Главная', '/home', this.homeIcon),
       new SidebarItem('Профиль', '/profile', this.profileIcon),
-      new SidebarItem('Не главная', '/nothome', this.notHomeIcon),
       new SidebarItem('Чятик', '/chyat', this.chatIcon),
-      new SidebarItem('Регистрация пользователя', '/register', this.regIcon)
+      new SidebarItem('Регистрация пользователя', '/register', this.regIcon),
+      new SidebarItem('Обучающиеся', '/students', this.studentIcon),
+      new SidebarItem('Сотрудники', '/employees', this.employeeIcon)
     ];
 
     this.isLoggedIn = this.authService.isLoggedIn();
