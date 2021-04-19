@@ -37,9 +37,9 @@ export class RegistrationPageComponent implements OnInit {
     console.log(this.user);
 
     this.registrationService.registerUser(this.user)
-      .subscribe(user => {
-        console.log(user);
-        this.snackBar.open('Пользователь успешно зарегестрирован');
-      });
+      .subscribe(
+        () => this.snackBar.open('Пользователь успешно зарегестрирован', null, {horizontalPosition: 'end'}),
+        () => this.snackBar.open('Возникла ошибка во время регистрации пользователя', null, {horizontalPosition: 'end'})
+      );
   }
 }
