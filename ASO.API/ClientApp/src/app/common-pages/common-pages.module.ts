@@ -17,7 +17,7 @@ import { UserTableComponent } from './user-table/user-table.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  {path: 'register', component: RegistrationPageComponent, canActivate: [AuthGuard]}
+  {path: 'register', component: RegistrationPageComponent, canActivate: [AuthGuard]},
   {path: 'nothome', component: UserTableComponent, canActivate: [AuthGuard]}
 ];
 

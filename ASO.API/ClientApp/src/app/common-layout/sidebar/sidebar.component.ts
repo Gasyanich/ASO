@@ -17,8 +17,8 @@ export class SidebarComponent implements OnInit {
   public regIcon = faPlus;
 
   // Получить по http с помощью какого-нибудь сервиса.
-  public email: string = '...';
-  public title: string = '...';
+  public email = '...';
+  public title = '...';
   public menuItems: SidebarItem[] = [];
 
   public isLoggedIn: boolean;
@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit {
       new SidebarItem('Регистрация пользователя', '/register', this.regIcon)
     ];
 
-    this.isLoggedIn = true;// this.authService.isLoggedIn();
+    this.isLoggedIn = this.authService.isLoggedIn();
     console.log(this.isLoggedIn);
   }
 
@@ -42,7 +42,7 @@ export class SidebarComponent implements OnInit {
     this.profileService.getCurrentUser().subscribe(user => {
       this.email = user.email;
       this.title = user.role.displayName;
-    })
+    });
   }
 
 }

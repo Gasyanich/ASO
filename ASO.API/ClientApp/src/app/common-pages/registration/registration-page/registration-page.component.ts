@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {RegistrationService} from '../registration.service';
-import {User} from '../../../core/models/users/user.model';
+
 import {ProfileService} from '../../profile/profile.service';
 import {Role} from '../../../core/models/users/role.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {User} from '../../../core/models/users/user.model';
 
 @Component({
   selector: 'aso-registration',
