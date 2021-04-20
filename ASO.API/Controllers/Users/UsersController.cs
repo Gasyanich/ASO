@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using ASO.API.Common.Constants;
+using ASO.API.Permission;
+using ASO.Models.DTO.Users;
 using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +16,66 @@ namespace ASO.API.Controllers.Users
     {
         private readonly IRoleService _roleService;
         private readonly IUsersService _usersService;
+        private readonly IRegisterService _registerService;
 
-        public UsersController(IUsersService usersService, IRoleService roleService)
+        public UsersController(IRoleService roleService, IUsersService usersService, IRegisterService registerService)
         {
-            _usersService = usersService;
             _roleService = roleService;
+            _usersService = usersService;
+            _registerService = registerService;
         }
+
+        [HttpPost]
+        [RolePermission]
+        public virtual async Task<IActionResult> PostUserAsync([FromQuery] string role, UserRegisterDto userRegisterDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _registerService.RegisterUserAsync(userRegisterDto, role);
+
+            return result.IsSuccess ? Ok(result.UserDto) : BadResultRequest(result);
+        }
+
+        [HttpGet("{id}")]
+        [RolePermission]
+        public virtual async Task<IActionResult> GetUserAsync([FromQuery] string role, long id)
+        {
+            if (!await _usersService.UserExistAsync(id))
+                return BadRequestWrongId(id);
+
+            var user = await _usersService.GetUserAsync(id);
+
+            return Ok(user);
+        }
+
+        [HttpPut]
+        [RolePermission]
+        public virtual async Task<IActionResult> PutUserAsync([FromQuery] string role, long id, UserUpdateDto userUpdateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!await _usersService.UserExistAsync(id))
+                return BadRequestWrongId(id);
+
+            var user = await _usersService.UpdateUserAsync(id, userUpdateDto);
+
+            return Ok(user);
+        }
+
+        [HttpDelete]
+        [RolePermission]
+        public virtual async Task<IActionResult> DeleteUserAsync([FromQuery] string role, long id)
+        {
+            if (!await _usersService.UserExistAsync(id))
+                return BadRequestWrongId(id);
+
+            await _usersService.DeleteUserAsync(id);
+
+            return NoContent();
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetUsersByRoleAsync([FromQuery(Name = "roles")] string roles)

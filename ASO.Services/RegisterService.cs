@@ -21,8 +21,10 @@ namespace ASO.Services
             _userManager = userManager;
         }
 
-        public async Task<RegisterUserResult> RegisterUserAsync(UserRegisterDto registerDto, long roleId)
+        public async Task<RegisterUserResult> RegisterUserAsync(UserRegisterDto registerDto, string role)
         {
+            var roleId = _roleService.GetRoleId(role);
+
             var registerResult = new RegisterUserResult();
 
             if (await _userManager.FindByEmailAsync(registerDto.Email) != null)
