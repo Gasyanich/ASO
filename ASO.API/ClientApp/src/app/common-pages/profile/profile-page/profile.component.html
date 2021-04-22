@@ -1,0 +1,39 @@
+<aso-page-title text="Профиль"></aso-page-title>
+<aso-content-card>
+  <div class="aso-profile-user">
+    <div class="aso-profile-pic">
+      <aso-avatar-photo [name]="user.firstName + ' ' + user.lastName"></aso-avatar-photo>
+    </div>
+    <span class="aso-profile-user-name">{{getUserFio()}}</span>
+    <span class="aso-profile-user-title">{{user.role.displayName}}</span>
+  </div>
+
+  <span class="aso-profile-user-details">Подробная информация</span>
+  <mat-list>
+    <mat-divider></mat-divider>
+    <mat-list-item class="aso-profile-list-item">
+      <fa-icon [icon]="userIcon"></fa-icon>
+      <div class="aso-profile-list-text-container">
+        <span>{{ getUserSex() }}</span>
+        <span class="aso-profile-list-caption">Пол</span>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item class="aso-profile-list-item">
+      <fa-icon [icon]="atIcon"></fa-icon>
+      <div class="aso-profile-list-text-container">
+        <span>{{ user.email }}</span>
+        <span class="aso-profile-list-caption">Почта</span>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item class="aso-profile-list-item">
+      <fa-icon [icon]="phoneIcon"></fa-icon>
+      <div class="aso-profile-list-text-container">
+        <span> {{ user.phoneNumber }}</span>
+        <span class="aso-profile-list-caption">Телефон</span>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+</aso-content-card>

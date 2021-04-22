@@ -1,0 +1,75 @@
+<aso-page-title text="Регистрация пользователя"></aso-page-title>
+
+<div>
+  <aso-content-card>
+
+    <form #registrationForm="ngForm" (ngSubmit)="registerUser(registrationForm)">
+
+      <h2 class="mat-h2">Роль</h2>
+
+      <div class="aso-registration-role">
+        <mat-form-field appearance="outline">
+          <mat-label>Роль пользователя</mat-label>
+          <mat-select required name="role" [(ngModel)]="user.role">
+            <mat-option *ngFor="let role of registrationRoles"
+                        [value]="role">
+              {{role.displayName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <h2 class="mat-h2">Личные данные</h2>
+
+      <div class="aso-registration-personal">
+        <mat-form-field appearance="outline">
+          <mat-label>Фамилия</mat-label>
+          <input matInput required [(ngModel)]="user.lastName" name="lastName"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Имя</mat-label>
+          <input matInput required [(ngModel)]="user.firstName" name="firstName"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Отчество</mat-label>
+          <input matInput required [(ngModel)]="user.patronymic" name="patronymic"/>
+        </mat-form-field>
+      </div>
+
+      <mat-radio-group [(ngModel)]="user.sex" name="sex">
+        <h3 class="mat-h3">Пол</h3>
+        <mat-radio-button class="aso-registration-personal-sex-radio" [value]="0">
+          Мужской
+        </mat-radio-button>
+        <mat-radio-button class="aso-registration-personal-sex-radio" [value]="1">
+          Женский
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <h2 class="mat-h2 aso-registration-contact-info-header">Контактная информация</h2>
+
+      <div class="aso-registration-contact-info">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput required [(ngModel)]="user.email" type="email" name="email"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Номер телефона</mat-label>
+          <input matInput required [(ngModel)]="user.phoneNumber" name="phoneNumber"/>
+        </mat-form-field>
+      </div>
+
+      <div class="aso-registration-buttons">
+        <button class="aso-registration-confirm-button"
+                [disabled]="!registrationForm.valid"
+                type="submit"
+                mat-raised-button
+                color="primary">
+          Зарегистрировать
+        </button>
+      </div>
+
+    </form>
+  </aso-content-card>
+</div>

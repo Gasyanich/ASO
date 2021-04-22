@@ -1,0 +1,12 @@
+:host {
+  min-height: 50%;
+}
+
+.aso-content-card-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 20px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+}

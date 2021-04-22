@@ -1,0 +1,17 @@
+@import "./palette";
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body, aso-root { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  opacity: 0 !important; /* click effect color change */
+  background-color: $aso-main-color !important;  }
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+background-color: $aso-main-color !important; /* inner circle color change */  }
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+border-color: $aso-main-color !important; /* outer ring color change */  }

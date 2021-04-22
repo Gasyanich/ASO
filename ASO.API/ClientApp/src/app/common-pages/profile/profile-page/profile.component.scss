@@ -1,0 +1,73 @@
+@import "../../../../palette";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* user section */
+.aso-profile-user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: auto;
+}
+
+.aso-profile-pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 90%;
+  background-color: $aso-soft-background;
+  align-self: center;
+
+  & fa-icon {
+    color: $aso-main-color;
+  }
+}
+
+.aso-profile-user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.aso-profile-user-title {
+  color: $aso-caption
+}
+
+.aso-profile-pic,
+.aso-profile-user-name,
+.aso-profile-user-title {
+  margin-bottom: 10px;
+}
+
+/* list section */
+.aso-profile-user-details {
+  font-weight: bold;
+}
+
+.aso-profile-list-item {
+  display: flex;
+  flex-direction: row;
+  height: 64px;
+
+  & fa-icon {
+    color: $aso-main-color;
+    margin-right: 16px;
+  }
+}
+
+.aso-profile-list-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.aso-profile-list-caption {
+  color: $aso-caption;
+  font-size: 0.8rem;
+}

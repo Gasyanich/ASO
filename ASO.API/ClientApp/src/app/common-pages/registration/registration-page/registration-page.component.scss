@@ -1,0 +1,48 @@
+.aso-registration-content{
+  height: auto;
+}
+
+.aso-registration-role {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 5px;
+}
+
+.aso-registration-personal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 5px;
+}
+
+.aso-registration-personal-sex {
+  display: flex;
+  flex-direction: row;
+}
+
+.aso-registration-personal-sex-radio:last-child {
+  margin: 0px 12px;
+}
+
+.aso-registration-contact-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 5px;
+}
+
+.aso-registration-contact-info-header {
+  margin-top: 20px;
+}
+
+.aso-registration-buttons {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+
+  button {
+    width: 150px;
+  }
+}
