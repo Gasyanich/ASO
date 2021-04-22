@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using ASO.API.Common.Attributes;
 using ASO.API.Common.Constants;
 using ASO.Models.DTO.Login;
 using ASO.Services.Interfaces;
@@ -28,9 +29,6 @@ namespace ASO.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginReqDto reqDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var loginResult = await _accountService.LoginAsync(reqDto);
 
             if (!loginResult.IsSuccess)

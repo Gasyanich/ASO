@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ASO.Models.Constants;
 using ASO.Models.DTO.Results;
@@ -66,53 +67,38 @@ namespace ASO.Services
             _actionContext = actionContextAccessor.ActionContext;
         }
 
-        public async Task<BaseResultDto> CheckUserCanAccessRoles(params string[] roles)
+        public bool CheckUserHasPermissionsToRoles(string roles)
         {
-            var accessToken = await _actionContext.HttpContext.GetTokenAsync("access_token");
-            var currentUserRole = accessToken.GetIdentityRole();
+            var roleNames = roles.GetRoleNames();
 
-            var availableRolesIds = currentUserRole switch
+            if (!roleNames.Any())
+                return false;
+
+            var currentUserRole = _actionContext.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+
+            var availableRoleNames = currentUserRole switch
             {
                 RolesConstants.Director => new[]
                 {
-                    RolesConstants.ManagerId, RolesConstants.StudentId, RolesConstants.TeacherId
+                    RolesConstants.Manager, RolesConstants.Student, RolesConstants.Teacher
                 },
                 RolesConstants.Manager => new[]
                 {
-                    RolesConstants.StudentId
+                    RolesConstants.Student
                 },
                 RolesConstants.Admin => new[]
                 {
-                    RolesConstants.DirectorId
+                    RolesConstants.Director
                 },
-                _ => Array.Empty<long>()
+                _ => Array.Empty<string>()
             };
-
-            var result = new BaseResultDto(true);
-
-            var availableRoleNames = availableRolesIds
-                .Select(roleId => _roleToRoleId[roleId]).Select(role => role.Name.ToUpper())
-                .ToList();
 
             if (!availableRoleNames.Any())
-                return result with
-                {
-                    IsSuccess = false, ErrorMessage = "Текущий пользователь не имеет доступа ни к одной роли"
-                };
+                return false;
 
-            var isUsersAccessToAllRoles = roles.All(role => availableRoleNames.Contains(role));
+            var isUsersAccessToAllRoles = roleNames.All(role => availableRoleNames.Contains(role.ToUpper()));
 
-            if (isUsersAccessToAllRoles)
-                return result;
-
-            var nonAccessRoles = roles.Except(availableRoleNames);
-
-            return result with
-            {
-                IsSuccess = false,
-                ErrorMessage =
-                $"Текущий пользователь не может получить доступ к следующим ролям:{string.Join(',', nonAccessRoles)}"
-            };
+            return isUsersAccessToAllRoles;
         }
 
         public RoleDto GetRoleById(long roleId)
