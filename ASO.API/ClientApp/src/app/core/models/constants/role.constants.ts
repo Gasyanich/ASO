@@ -1,26 +1,26 @@
 import {Role} from '../users/role.model';
 
 export const ADMIN: Role = {
-  name: 'Admin',
+  name: 'ADMIN',
   displayName: 'Администратор'
 };
 
 export const DIRECTOR: Role = {
-  name: 'Director',
+  name: 'DIRECTOR',
   displayName: 'Директор'
 };
 
 export const MANAGER: Role = {
-  name: 'Manager',
+  name: 'MANAGER',
   displayName: 'Менеджер'
 };
 
 export const TEACHER: Role = {
-  name: 'Teacher',
+  name: 'TEACHER',
   displayName: 'Преподаватель'
 };
 
 export const STUDENT: Role = {
-  name: 'Student',
+  name: 'STUDENT',
   displayName: 'Обучающийся'
 };

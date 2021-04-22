@@ -31,16 +31,7 @@ export class RegistrationService {
   }
 
   private getRegisterUrlApiByRole(role: Role): string {
-    switch (role.name) {
-      case MANAGER.name:
-        return '/managers';
-      case STUDENT.name:
-        return '/students';
-      case TEACHER.name:
-        return '/teachers';
-      default:
-        return '';
-    }
+    return '/users?role=' + role.name;
   }
 
 }
