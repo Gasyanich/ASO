@@ -2,11 +2,11 @@
 {
     public class RolesConstants
     {
-        public const string Admin = "Admin";
-        public const string Director = "Director";
-        public const string Teacher = "Teacher";
-        public const string Student = "Student";
-        public const string Manager = "Manager";
+        public const string Admin = "ADMIN";
+        public const string Director = "DIRECTOR";
+        public const string Teacher = "TEACHER";
+        public const string Student = "STUDENT";
+        public const string Manager = "MANAGER";
 
         public const long AdminId = 1;
         public const long DirectorId = 2;

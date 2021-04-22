@@ -6,6 +6,6 @@ namespace ASO.Services.Interfaces
 {
     public interface IRegisterService
     {
-        Task<RegisterUserResult> RegisterUserAsync(UserRegisterDto registerDto, long roleId);
+        Task<RegisterUserResult> RegisterUserAsync(UserRegisterDto registerDto, string role);
     }
 }
