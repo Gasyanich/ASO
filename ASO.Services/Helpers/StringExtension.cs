@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ASO.Services.Helpers
 {
-    public static class StringJwtExtension
+    public static class StringExtension
     {
         public static string GetIdentityRole(this string jwtString)
         {
@@ -11,6 +11,13 @@ namespace ASO.Services.Helpers
             var decodedToken = handler.ReadToken(jwtString) as JwtSecurityToken;
 
             return decodedToken?.Claims.First(claim => claim.Type == "role").Value;
+        }
+
+        public static string[] GetRoleNames(this string roles)
+        {
+            var rolesArray = roles.Split(',').Select(role => role.ToUpper()).ToArray();
+
+            return rolesArray;
         }
     }
 }

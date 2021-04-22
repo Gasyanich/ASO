@@ -1,13 +1,15 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
+using ASO.API.Common.Attributes;
 using ASO.API.Common.Constants;
-using ASO.API.Permission;
 using ASO.Models.DTO.Users;
+using ASO.Services.Helpers;
 using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASO.API.Controllers.Users
+namespace ASO.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -27,11 +29,10 @@ namespace ASO.API.Controllers.Users
 
         [HttpPost]
         [RolePermission]
-        public virtual async Task<IActionResult> PostUserAsync([FromQuery] string role, UserRegisterDto userRegisterDto)
+        public virtual async Task<IActionResult> PostUserAsync(
+            [FromQuery] [Required] string role,
+            UserRegisterDto userRegisterDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var result = await _registerService.RegisterUserAsync(userRegisterDto, role);
 
             return result.IsSuccess ? Ok(result.UserDto) : BadResultRequest(result);
@@ -39,7 +40,7 @@ namespace ASO.API.Controllers.Users
 
         [HttpGet("{id}")]
         [RolePermission]
-        public virtual async Task<IActionResult> GetUserAsync([FromQuery] string role, long id)
+        public virtual async Task<IActionResult> GetUserAsync([FromQuery] [Required] string role, long id)
         {
             if (!await _usersService.UserExistAsync(id))
                 return BadRequestWrongId(id);
@@ -51,11 +52,11 @@ namespace ASO.API.Controllers.Users
 
         [HttpPut]
         [RolePermission]
-        public virtual async Task<IActionResult> PutUserAsync([FromQuery] string role, long id, UserUpdateDto userUpdateDto)
+        public virtual async Task<IActionResult> PutUserAsync(
+            [FromQuery] [Required] string role,
+            long id,
+            UserUpdateDto userUpdateDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _usersService.UserExistAsync(id))
                 return BadRequestWrongId(id);
 
@@ -66,7 +67,7 @@ namespace ASO.API.Controllers.Users
 
         [HttpDelete]
         [RolePermission]
-        public virtual async Task<IActionResult> DeleteUserAsync([FromQuery] string role, long id)
+        public virtual async Task<IActionResult> DeleteUserAsync([FromQuery] [Required] string role, long id)
         {
             if (!await _usersService.UserExistAsync(id))
                 return BadRequestWrongId(id);
@@ -78,20 +79,10 @@ namespace ASO.API.Controllers.Users
 
 
         [HttpGet]
-        public async Task<IActionResult> GetUsersByRoleAsync([FromQuery(Name = "roles")] string roles)
+        [RolePermission(IsMultipleRoles = true)]
+        public async Task<IActionResult> GetUsersByRoleAsync([FromQuery] [Required] string roles)
         {
-            var rolesArray = roles.Split(',').Select(role => role.ToUpper()).ToArray();
-
-            if (!rolesArray.Any())
-                return BadRequestError("Не выбрано ни одной роли");
-
-            var isUserAccessRoles = await _roleService.CheckUserCanAccessRoles(rolesArray);
-
-            if (!isUserAccessRoles.IsSuccess)
-                return BadResultRequest(isUserAccessRoles);
-
-
-            var roleIds = rolesArray.Select(roleName => _roleService.GetRoleId(roleName));
+            var roleIds = roles.GetRoleNames().Select(roleName => _roleService.GetRoleId(roleName));
             var usersByRoles = await _usersService.GetUsersByRoleIdsAsync(roleIds);
 
             return Ok(usersByRoles);
