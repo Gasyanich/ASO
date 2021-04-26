@@ -1,5 +1,11 @@
+@import "../../../../palette";
+
 .aso-user-table {
   width: 100%;
 }
 
-
+.aso-user-table-row {
+  &:hover {
+    background-color: $aso-soft-background;
+  }
+}

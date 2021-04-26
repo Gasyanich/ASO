@@ -18,4 +18,8 @@ export class UserService {
     return this.http.get<User[]>(`/Users?roles=${roleNames}`);
   }
 
+  public deleteUser(user: User): Observable<any> {
+    return this.http.delete(`/Users?role=${user.role.name}&id=${user.id}`);
+  }
+
 }

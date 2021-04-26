@@ -4,7 +4,7 @@ import {RegistrationService} from '../registration.service';
 import {ProfileService} from '../../profile/profile.service';
 import {Role} from '../../../core/models/users/role.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {User} from '../../../core/models/users/user.model';
+import {Sex, User} from '../../../core/models/users/user.model';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -29,23 +29,25 @@ export class RegistrationPageComponent implements OnInit {
     this.profileService.getCurrentUser()
       .subscribe(currentUser => {
         this.registrationRoles = this.registrationService.getRegistrationRoles(currentUser.role);
-        this.user.role = this.registrationRoles[0];
+        this.initNewUser();
       });
-
-    this.user.sex = 0;
   }
 
   public registerUser(form: NgForm): void {
-    console.log(this.user);
-
     this.registrationService.registerUser(this.user)
       .subscribe(
         () => {
-          this.snackBar.open('Пользователь успешно зарегестрирован', null, {horizontalPosition: 'end', duration: 2000});
-          this.user = new User();
+          this.snackBar.open('Пользователь успешно зарегестрирован', 'Ок');
+          this.initNewUser();
           form.resetForm(this.user);
         },
-        () => this.snackBar.open('Возникла ошибка во время регистрации пользователя', null, {horizontalPosition: 'end', duration: 2000})
+        () => this.snackBar.open('Возникла ошибка во время регистрации пользователя', 'Ок')
       );
+  }
+
+  private initNewUser(): void {
+    this.user = new User();
+    this.user.sex = Sex.Male;
+    this.user.role = this.registrationRoles[0];
   }
 }

@@ -3,6 +3,7 @@ import {UserTablePageBaseComponent} from './user-table-page-base/user-table-page
 import {STUDENT} from '../../../core/models/constants/role.constants';
 import {Role} from '../../../core/models/users/role.model';
 import {UserService} from '../user.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'aso-student-table-page',
@@ -15,8 +16,8 @@ export class StudentTablePageComponent extends UserTablePageBaseComponent {
   public isShowRoleColumn = false;
   protected roles: Role[] = [STUDENT];
 
-  constructor(private usersService: UserService) {
-    super(usersService);
+  constructor(protected usersService: UserService, protected snackBar: MatSnackBar) {
+    super(usersService, snackBar);
   }
 
 }
