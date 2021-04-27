@@ -1,10 +1,7 @@
 @import "../../../../palette";
 
-:host {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
+:host{
+  padding: 15px;
 }
 
 /* user section */
@@ -13,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  margin-bottom: auto;
+  margin-bottom: 30px;
 }
 
 .aso-profile-pic {

@@ -15,3 +15,9 @@ background-color: $aso-main-color !important; /* inner circle color change */  }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
 border-color: $aso-main-color !important; /* outer ring color change */  }
+
+.aso-mat-dialog{
+  mat-dialog-container{
+    border-radius: 15px;
+  }
+}

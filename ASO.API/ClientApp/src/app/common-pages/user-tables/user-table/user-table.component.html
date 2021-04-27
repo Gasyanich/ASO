@@ -28,11 +28,8 @@
   <ng-container matColumnDef="actions" [stickyEnd]="true">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let user">
-      <button mat-icon-button color="primary">
+      <button mat-icon-button color="primary" (click)="showUserProfile(user)">
         <mat-icon>info</mat-icon>
-      </button>
-      <button mat-icon-button color="primary">
-        <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button color="accent" (click)="deleteUser(user)">
         <mat-icon>delete</mat-icon>

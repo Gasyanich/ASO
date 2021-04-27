@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../../core/models/users/user.model';
 import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class ProfileService {
 
     return this.http.get<User>('/me')
       .pipe(
-        map((user: User) => {
+        tap((user: User) => {
           this.user = user;
           return user;
         })

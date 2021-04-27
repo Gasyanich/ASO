@@ -20,6 +20,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
 
   @Input() public isRoleColumnShown = false;
   @Input() public deleteUser: (user: User) => void;
+  @Input() public showUserProfile: (user: User) => void;
   @ViewChild(MatSort) public matSort: MatSort;
 
   @Input() set searchText(value: string) {
