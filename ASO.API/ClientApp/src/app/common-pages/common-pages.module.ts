@@ -53,7 +53,6 @@ const routes: Routes = [
     FormsModule
   ],
   exports: [
-    ProfilePageComponent,
     RouterModule
   ],
   entryComponents: [

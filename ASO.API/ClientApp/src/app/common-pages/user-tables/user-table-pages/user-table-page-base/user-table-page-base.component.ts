@@ -48,8 +48,7 @@ export class UserTablePageBaseComponent implements OnInit {
   public showUserProfile = (user: User): void => {
     this.dialog.open(ProfileDialogComponent, {
       width: '600px',
-      data: user,
-      panelClass: 'aso-mat-dialog'
+      data: user
     });
   }
 }
