@@ -22,7 +22,7 @@ export class RegistrationService {
   public getRegistrationRoles(currentRole: Role): Role[] {
     switch (currentRole.name) {
       case MANAGER.name:
-        return [TEACHER];
+        return [STUDENT];
       case DIRECTOR.name:
         return [STUDENT, TEACHER, MANAGER];
       default:

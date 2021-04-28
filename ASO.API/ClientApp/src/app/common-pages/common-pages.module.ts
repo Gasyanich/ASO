@@ -20,6 +20,7 @@ import {EmployeeTablePageComponent} from './user-tables/user-table-pages/employe
 import {ProfileComponent} from './profile/profile/profile.component';
 import {ProfileDialogComponent} from './profile/profile-dialog/profile-dialog.component';
 import {SidebarComponent} from '../common-layout/sidebar/sidebar.component';
+import {COMMON_PAGE_ROUTES} from './common-pages.routes';
 
 
 const routes: Routes = [
@@ -27,10 +28,7 @@ const routes: Routes = [
     path: '', component: SidebarComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
     children: [
       {path: '', redirectTo: 'profile', pathMatch: 'full'},
-      {path: 'profile', component: ProfilePageComponent},
-      {path: 'register', component: RegistrationPageComponent},
-      {path: 'students', component: StudentTablePageComponent},
-      {path: 'employees', component: EmployeeTablePageComponent}
+      ...COMMON_PAGE_ROUTES
     ]
   },
 ];
