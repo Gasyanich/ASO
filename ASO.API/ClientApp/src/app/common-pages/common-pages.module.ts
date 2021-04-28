@@ -19,14 +19,20 @@ import {StudentTablePageComponent} from './user-tables/user-table-pages/student-
 import {EmployeeTablePageComponent} from './user-tables/user-table-pages/employee-table-page.component';
 import {ProfileComponent} from './profile/profile/profile.component';
 import {ProfileDialogComponent} from './profile/profile-dialog/profile-dialog.component';
+import {SidebarComponent} from '../common-layout/sidebar/sidebar.component';
 
 
 const routes: Routes = [
-  {path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard]},
-  {path: 'register', component: RegistrationPageComponent, canActivate: [AuthGuard]},
-  {path: 'nothome', component: UserTableComponent, canActivate: [AuthGuard]},
-  {path: 'students', component: StudentTablePageComponent, canActivate: [AuthGuard]},
-  {path: 'employees', component: EmployeeTablePageComponent, canActivate: [AuthGuard]}
+  {
+    path: '', component: SidebarComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    children: [
+      {path: '', redirectTo: 'profile', pathMatch: 'full'},
+      {path: 'profile', component: ProfilePageComponent},
+      {path: 'register', component: RegistrationPageComponent},
+      {path: 'students', component: StudentTablePageComponent},
+      {path: 'employees', component: EmployeeTablePageComponent}
+    ]
+  },
 ];
 
 @NgModule({

@@ -1,3 +1,7 @@
+<mat-toolbar color="primary" class="example-toolbar">
+  <h1 class="aso-sidebar-name">ASO</h1>
+</mat-toolbar>
+
 <body>
 <mat-card class="card">
   <mat-card-content>
@@ -14,7 +18,8 @@
         <input matInput type="password" [(ngModel)]="userLogin.password" required name="password">
       </mat-form-field>
 
-      <span class="login-error-color" *ngIf="userLoginResult && !userLoginResult.isSuccess">{{userLoginResult.errorMessage}}</span>
+      <span class="login-error-color"
+            *ngIf="userLoginResult && !userLoginResult.isSuccess">{{userLoginResult.errorMessage}}</span>
 
       <button color="primary" type="submit" [disabled]="!loginForm.valid" mat-raised-button>Войти</button>
     </form>
