@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {User} from '../../core/models/users/user.model';
-import {Observable, of} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../../core/models/users/user.model';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  private user: User | undefined;
+  public user: User | undefined;
 
   constructor(private http: HttpClient) {
   }
@@ -27,6 +27,4 @@ export class ProfileService {
         })
       );
   }
-
-
 }

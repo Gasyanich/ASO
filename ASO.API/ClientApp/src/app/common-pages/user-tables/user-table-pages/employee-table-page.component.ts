@@ -20,6 +20,4 @@ export class EmployeeTablePageComponent extends UserTablePageBaseComponent {
   constructor(protected userService: UserService, protected snackBar: MatSnackBar, protected dialog: MatDialog) {
     super(userService, snackBar, dialog);
   }
-
-
 }
