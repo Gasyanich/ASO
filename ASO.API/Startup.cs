@@ -1,13 +1,15 @@
-using System;
-using System.Collections.Generic;
 using ASO.Services.Bootstrap;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
 
 namespace ASO.API
 {
@@ -26,7 +28,7 @@ namespace ASO.API
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "ASO.API", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ASO.API", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description =
@@ -79,6 +81,14 @@ namespace ASO.API
             }
 
             app.UseHttpsRedirection();
+            app.UseExceptionHandler(c => c.Run(async context =>
+            {
+                var exception = context.Features
+                    .Get<IExceptionHandlerPathFeature>()
+                    .Error;
+                var response = new { error = exception.Message };
+                await context.Response.WriteAsJsonAsync(response);
+            }));
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

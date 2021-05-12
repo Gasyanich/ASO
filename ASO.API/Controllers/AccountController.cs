@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using ASO.API.Common.Attributes;
-using ASO.API.Common.Constants;
+﻿using ASO.API.Common.Constants;
 using ASO.Models.DTO.Login;
 using ASO.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace ASO.API.Controllers
 {
@@ -13,16 +13,18 @@ namespace ASO.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-
-        public AccountController(IAccountService accountService)
+        private readonly ILogger<AccountController> _logger;
+        public AccountController(IAccountService accountService, ILogger<AccountController> logger)
         {
             _accountService = accountService;
+            _logger = logger;
         }
 
         [HttpGet("me")]
         [Authorize(Roles = AuthorizeConstants.MeRoles)]
         public async Task<IActionResult> MeAsync()
         {
+            _logger.LogInformation("MeAsync is success");
             return Ok(await _accountService.GetMeAsync());
         }
 
@@ -32,8 +34,12 @@ namespace ASO.API.Controllers
             var loginResult = await _accountService.LoginAsync(reqDto);
 
             if (!loginResult.IsSuccess)
+            {
+                _logger.LogInformation("Log in is not successful");
                 return Unauthorized(loginResult.ErrorMessage);
+            }
 
+            _logger.LogInformation("User logged in successfully");
             return Ok(loginResult.Token);
         }
     }
