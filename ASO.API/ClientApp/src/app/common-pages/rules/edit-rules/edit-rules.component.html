@@ -1,0 +1,10 @@
+<aso-page-title text="Изменение ПДД"></aso-page-title>
+
+<aso-content-card>
+  <angular-editor [(ngModel)]="rulesContent">
+  </angular-editor>
+  <div class="aso-edit-rules-buttons">
+    <button mat-raised-button class="aso-edit-rules-save" (click)="saveContent()">Сохранить</button>
+    <button mat-raised-button class="aso-edit-rules-reset" (click)="initContent()">Сброс</button>
+  </div>
+</aso-content-card>

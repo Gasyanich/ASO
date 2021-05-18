@@ -21,6 +21,8 @@ import {ProfileComponent} from './profile/profile/profile.component';
 import {ProfileDialogComponent} from './profile/profile-dialog/profile-dialog.component';
 import {SidebarComponent} from '../common-layout/sidebar/sidebar.component';
 import {COMMON_PAGE_ROUTES} from './common-pages.routes';
+import { EditRulesComponent } from './rules/edit-rules/edit-rules.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 const routes: Routes = [
@@ -44,7 +46,8 @@ const routes: Routes = [
     StudentTablePageComponent,
     EmployeeTablePageComponent,
     ProfileComponent,
-    ProfileDialogComponent
+    ProfileDialogComponent,
+    EditRulesComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +57,8 @@ const routes: Routes = [
     AuthModule,
     CommonLayoutModule,
     RouterModule.forRoot(routes),
-    FormsModule
+    FormsModule,
+    AngularEditorModule
   ],
   exports: [
     RouterModule

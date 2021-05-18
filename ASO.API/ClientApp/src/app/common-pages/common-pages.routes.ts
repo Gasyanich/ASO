@@ -4,13 +4,15 @@ import {RegistrationPageComponent} from './registration/registration-page/regist
 import {StudentTablePageComponent} from './user-tables/user-table-pages/student-table-page.component';
 import {EmployeeTablePageComponent} from './user-tables/user-table-pages/employee-table-page.component';
 import {DIRECTOR, MANAGER} from '../core/models/constants/role.constants';
-import {faPlus, faUser, faUserGraduate, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {faCarCrash, faPlus, faUser, faUserGraduate, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {SidebarRouteData} from '../common-layout/sidebar/sidebar-route-data';
+import {EditRulesComponent} from './rules/edit-rules/edit-rules.component';
 
 const regIcon = faPlus;
 const studentIcon = faUserGraduate;
 const profileIcon = faUser;
 const employeeIcon = faUsers;
+const rulesIcon = faCarCrash;
 
 export const COMMON_PAGE_ROUTES: Routes = [
   {
@@ -39,6 +41,13 @@ export const COMMON_PAGE_ROUTES: Routes = [
     component: EmployeeTablePageComponent,
     data: {
       routeData: new SidebarRouteData('Сотрудники', employeeIcon, [DIRECTOR])
+    }
+  },
+  {
+    path: 'rules',
+    component: EditRulesComponent,
+    data: {
+      routeData: new SidebarRouteData('Изменить ПДД', rulesIcon, [MANAGER, DIRECTOR])
     }
   }
 ];
